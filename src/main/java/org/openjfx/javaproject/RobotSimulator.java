@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -18,6 +19,15 @@ public class RobotSimulator extends Application {
         // Create a room
         Room room = new Room(500, 500);
         Pane root = room.create();
+
+        Circle obstacle1 = new Circle(20, 200, 20);
+        Circle obstacle2 = new Circle(300, 150, 15);
+        obstacle1.setFill(Color.GRAY);
+        obstacle2.setFill(Color.GRAY);
+        room.addObstacle(obstacle1);
+        room.addObstacle(obstacle2);
+
+        root.getChildren().addAll(obstacle1, obstacle2);
 
         // Create robots
         robots = new ArrayList<>();
