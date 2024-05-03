@@ -127,6 +127,7 @@ public class Autorobot {
                 endX < 0 || endX > room.getWidth() || endY < 0 || endY > room.getHeight();
     }
 
+
 }
 
 

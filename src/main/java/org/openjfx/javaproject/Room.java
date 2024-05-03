@@ -7,6 +7,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Room {
@@ -14,10 +15,13 @@ public class Room {
     private double height;
     private List<Circle> obstacles; // List of obstacles
 
+    private List<Autorobot> robots;
+
     public Room(double width, double height) {
         this.width = width;
         this.height = height;
-        this.obstacles = new ArrayList<>(); // Initialize the list
+        this.obstacles = new ArrayList<>();
+        this.robots = new ArrayList<>();
     }
 
     public Pane create() {
@@ -48,5 +52,17 @@ public class Room {
 
     public List<Circle> getObstacles() {
         return obstacles;
+    }
+
+    public void addRobot(Autorobot robot) {
+        this.robots.add(robot);
+    }
+
+    public List<Autorobot> getRobots() {
+        return Collections.unmodifiableList(this.robots);
+    }
+
+    public void clear() {
+        this.robots.clear();
     }
 }
