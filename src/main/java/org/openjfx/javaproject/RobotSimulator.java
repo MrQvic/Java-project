@@ -3,19 +3,25 @@ package org.openjfx.javaproject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-import java.util.Optional;
+import org.openjfx.javaproject.room.Autorobot;
+
+import org.openjfx.javaproject.room.Room;
+import org.openjfx.javaproject.ui.buttons.AddObstacleButton;
+import org.openjfx.javaproject.ui.buttons.AddRobotButton;
+import org.openjfx.javaproject.ui.buttons.PauseButton;
+import org.openjfx.javaproject.ui.buttons.StartButton;
 
 public class RobotSimulator extends Application {
     private AnimationTimer timer;
+    private boolean isSimulationStarted = false;
 
     @Override
     public void start(Stage primaryStage) {
@@ -23,75 +29,26 @@ public class RobotSimulator extends Application {
         Room room = new Room(500, 500);
         Pane roomPane = room.create();
 
-        // Create a start button
-        Button startButton = new Button("Start Simulation");
-        startButton.setOnAction(e -> {
-            if (timer == null) {
-                timer = new AnimationTimer() {
-                    @Override
-                    public void handle(long now) {
-                        // Update each robot
-                        for (Autorobot robot : room.getRobots()) {
-                            robot.update(room);
-                        }
-                    }
-                };
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Update each robot
+                for (Autorobot robot : room.getRobots()) {
+                    robot.update(room);
+                }
             }
-            timer.start();
-        });
+        };
+
+        // Create a start button
+        Button startButton = new StartButton(this);
 
         // Create a pause button
-        Button pauseButton = new Button("Pause Simulation");
-        pauseButton.setOnAction(e -> {
-            if (timer != null) {
-                timer.stop();
-            }
-        });
+        PauseButton pauseButton = new PauseButton(timer);
 
         // Create an add robot button
-        Button addRobotButton = new Button("Add Robot");
-        addRobotButton.setOnAction(e -> {
-            if (timer == null){
-                // Create a dialog for user input
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Add Robot");
-                dialog.setHeaderText("Enter the robot's position (x,y):");
+        AddRobotButton addRobotButton = new AddRobotButton(this, room, roomPane);
 
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(position -> {
-                    String[] coordinates = position.split(",");
-                    int x = Integer.parseInt(coordinates[0].trim());
-                    int y = Integer.parseInt(coordinates[1].trim());
-
-                    Autorobot newRobot = new Autorobot(x, y);
-                    room.addRobot(newRobot);
-                    roomPane.getChildren().add(newRobot.getShape());
-                });
-            }
-        });
-
-        Button addObstacleButton = new Button("Add Obstacle");
-        addObstacleButton.setOnAction(e -> {
-            if (timer == null){
-                // Create a dialog for user input
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Add Obstacle");
-                dialog.setHeaderText("Enter the obstacle's position (x,y):");
-
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(position -> {
-                    String[] coordinates = position.split(",");
-                    int x = Integer.parseInt(coordinates[0].trim());
-                    int y = Integer.parseInt(coordinates[1].trim());
-
-                    Circle obstacle = new Circle(x, y, 30);
-                    obstacle.setFill(Color.GRAY);
-
-                    room.addObstacle(obstacle);
-                    roomPane.getChildren().add(obstacle);
-                });
-            }
-        });
+        Button addObstacleButton = new AddObstacleButton(this, room, roomPane);
 
         // Create a new pane for buttons
         VBox buttonPane = new VBox(10); // 10 is the spacing between buttons
@@ -103,10 +60,19 @@ public class RobotSimulator extends Application {
         mainPane.setCenter(roomPane);
         mainPane.setRight(buttonPane);
 
-        Scene scene = new Scene(mainPane, room.getWidth() + 150, room.getHeight()); // Added 100 for the width of buttonPane
+        Scene scene = new Scene(mainPane, room.getWidth() + 150, room.getHeight()); // Added 150 for the width of buttonPane
 
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void startSimulation() {
+        isSimulationStarted = true;
+        timer.start();
+    }
+
+    public boolean isSimulationStarted() {
+        return isSimulationStarted;
     }
 
     public static void main(String[] args) {
