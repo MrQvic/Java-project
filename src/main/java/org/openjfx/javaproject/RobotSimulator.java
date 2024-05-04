@@ -19,6 +19,9 @@ import org.openjfx.javaproject.ui.buttons.AddRobotButton;
 import org.openjfx.javaproject.ui.buttons.PauseButton;
 import org.openjfx.javaproject.ui.buttons.StartButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RobotSimulator extends Application {
     private AnimationTimer timer;
     private boolean isSimulationStarted = false;
@@ -29,12 +32,28 @@ public class RobotSimulator extends Application {
         Room room = new Room(500, 500);
         Pane roomPane = room.create();
 
+        Log log = new Log();
+        log.initLogs();
+
+
+
         timer = new AnimationTimer() {
+            int stepNumber = 0;
             @Override
             public void handle(long now) {
                 // Update each robot
+                List<String> positions = new ArrayList<>();
+
                 for (Autorobot robot : room.getRobots()) {
                     robot.update(room);
+                    positions.add(robot.getPositionAsString());
+                }
+                stepNumber++;
+                System.out.println(stepNumber);
+
+                log.recordLogs(stepNumber, log.formatToJson(positions));
+                if (stepNumber % 120 == 0) { // Output to file every 2 seconds
+                    log.bufferOut("log.txt");
                 }
             }
         };

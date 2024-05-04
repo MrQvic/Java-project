@@ -120,9 +120,18 @@ public class Autorobot {
         return position;
     }
 
+    public String getPositionAsString() {
+        String result = String.format("%.2f %.2f %.2f", position.getX(), position.getY(), getAngle());
+        System.out.println(result);
+        return result;
+
+        //return "x: " + position.getX() + ", y: " + position.getY();
+    }
+
     public double getSize() {
         return RADIUS;
     }
+    public double getAngle(){ return angle; }
 }
 
 
