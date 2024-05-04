@@ -1,7 +1,8 @@
 package org.openjfx.javaproject;
+import javafx.geometry.Insets;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.openjfx.javaproject.room.Autorobot;
-
-import javafx.scene.layout.StackPane;
 
 import javafx.geometry.Pos;
 import javafx.animation.AnimationTimer;
@@ -11,9 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
@@ -41,8 +39,9 @@ public class RobotSimulator extends Application {
 
         // Create a dialog for input
         Room room = getRoom();
-        //Pane roomPane = room.create();
         roomPane = room.create();
+        roomPane.setStyle("-fx-background-color: #bdc3c7;");
+
 
         // Initialise logging
         Log log = new Log();
@@ -87,19 +86,32 @@ public class RobotSimulator extends Application {
         startButton.setPrefSize(135,12);
         pauseButton.setPrefSize(135,12);
 
-        // Create a new pane for buttons
-        VBox buttonPane = new VBox(10);
-        buttonPane.setAlignment(Pos.TOP_CENTER);
-        buttonPane.getChildren().addAll(startButton, pauseButton, addRobotButton, addObstacleButton, addControlledRobotButton);
+        // Create a new pane for top buttons
+        VBox topButtonPane = new VBox(10);
+        topButtonPane.setAlignment(Pos.TOP_CENTER);
+        topButtonPane.getChildren().addAll(addObstacleButton, addControlledRobotButton, addRobotButton);
+        topButtonPane.setPadding(new Insets(0, 10, 10, 10));
+
+        // Create a new pane for bottom buttons
+        VBox bottomButtonPane = new VBox(10);
+        bottomButtonPane.setAlignment(Pos.BOTTOM_CENTER);
+        bottomButtonPane.getChildren().addAll(startButton, pauseButton);
+        bottomButtonPane.setPadding(new Insets(0, 10, 0, 10));
+
+        // Create a new BorderPane for the button layout
+        BorderPane buttonLayout = new BorderPane();
+        buttonLayout.setTop(topButtonPane);
+        buttonLayout.setBottom(bottomButtonPane);
 
         // Create a main pane and add roomPane and buttonPane
         BorderPane mainPane = new BorderPane();
+        mainPane.setPadding(new Insets(10, 0, 10, 10)); // Set padding for mainPane
         mainPane.setCenter(roomPane);
-        mainPane.setRight(buttonPane);
+        mainPane.setRight(buttonLayout);
 
         // Main Scene
-        mainPane.setStyle("-fx-padding: 10px 10px 10px 10px;");
-        Scene scene = new Scene(mainPane, room.getWidth() + 170, room.getHeight() + 20); // Added 150 for the width of buttonPane
+        mainPane.setStyle("-fx-background-color: #2c3e50;");
+        Scene scene = new Scene(mainPane, room.getWidth() + 150 + 13, room.getHeight() + 20);
 
 
         // Key Input Listeners
@@ -117,7 +129,7 @@ public class RobotSimulator extends Application {
             }
         });
 
-
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
 
