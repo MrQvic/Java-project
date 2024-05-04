@@ -110,6 +110,7 @@ public class RobotSimulator extends Application {
 
         if (room.isControlledRobotSet()) {
             roomPane.getChildren().add(room.controlledRobot.getShape());
+            roomPane.getChildren().add(room.controlledRobot.getDirectionLine());
             System.out.println("Requesting focus for controlled robot shape");
             roomPane.requestFocus(); // Request focus on the roomPane
         } else {
