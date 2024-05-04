@@ -1,5 +1,6 @@
 package org.openjfx.javaproject.room;
 
+import javafx.scene.robot.Robot;
 import javafx.scene.shape.Circle;
 import org.openjfx.javaproject.common.Obstacle;
 
@@ -54,6 +55,20 @@ public class Autorobot {
                 angle += 0.1;
             }
         }
+
+        for (Autorobot robot : room.getRobots()){
+            if (this != robot){
+                //autobot x autbot collision logic
+                //checkCollision(robot);
+            }
+        }
+
+
+        if(room.isControlledRobotSet()){
+            //autorobot x controlled robot logic
+        }
+
+
         if(isInViewOfEdgeCenter(nextX, nextY, room)){
             angle += 0.1;
         } else if (isInViewOfEdgeLeft(nextX, nextY, room)){
@@ -138,7 +153,12 @@ public class Autorobot {
         return RADIUS;
     }
     public double getAngle(){ return angle; }
+
+    private boolean checkCollision(Autorobot robot) {
+        return false;
+    }
 }
+
 
 
 

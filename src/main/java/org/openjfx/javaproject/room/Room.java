@@ -99,4 +99,8 @@ public class Room {
         return true;
     }
 
+    public ControlledRobot getControlledRobot(){
+        return this.controlledRobot;
+    }
+
 }
