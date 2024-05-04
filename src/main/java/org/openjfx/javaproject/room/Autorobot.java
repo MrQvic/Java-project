@@ -63,9 +63,28 @@ public class Autorobot {
             }
         }
 
-
         if(room.isControlledRobotSet()){
-            //autorobot x controlled robot logic
+            ControlledRobot controlledRobot = room.getControlledRobot();
+            if (controlledRobot != null && checkCollision(controlledRobot, nextX, nextY)) {
+                // If collision with the controlled robot, turn away
+                //angle += 0.1;
+                //return;
+                // Calculate vector from this robot to the controlled robot
+                double dx = controlledRobot.getPosition().getX() - position.getX();
+                double dy = controlledRobot.getPosition().getY() - position.getY();
+
+                // Calculate the angle away from the controlled robot
+                double angleAway = Math.atan2(-dy, -dx);
+
+                // Update the robot's angle to move away from the controlled robot
+                angle = angleAway;
+
+                // Move in the new direction
+                velX = SPEED * Math.cos(angleAway);
+                velY = SPEED * Math.sin(angleAway);
+                nextX = position.getX() + velX * TIME_STEP;
+                nextY = position.getY() + velY * TIME_STEP;
+            }
         }
 
 
@@ -156,6 +175,14 @@ public class Autorobot {
 
     private boolean checkCollision(Autorobot robot) {
         return false;
+    }
+
+    private boolean checkCollision(ControlledRobot robot, double nextX, double nextY) {
+        double dx = nextX - robot.getPosition().getX();
+        double dy = nextY - robot.getPosition().getY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < (RADIUS + robot.getSize() + 10);
     }
 }
 

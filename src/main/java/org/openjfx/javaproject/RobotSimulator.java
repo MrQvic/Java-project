@@ -1,7 +1,6 @@
 package org.openjfx.javaproject;
 import org.openjfx.javaproject.room.Autorobot;
 
-
 import javafx.scene.layout.StackPane;
 
 import javafx.geometry.Pos;
@@ -20,7 +19,6 @@ import javafx.stage.Stage;
 
 import javafx.event.EventHandler;
 
-
 import org.openjfx.javaproject.room.ControlledRobot;
 import org.openjfx.javaproject.room.Position;
 import org.openjfx.javaproject.room.Room;
@@ -29,6 +27,7 @@ import org.openjfx.javaproject.ui.buttons.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 public class RobotSimulator extends Application {
     private AnimationTimer timer;
@@ -45,10 +44,7 @@ public class RobotSimulator extends Application {
         //Pane roomPane = room.create();
         roomPane = room.create();
 
-        //Position user_position = new Position(200, 200);
-        //ControlledRobot userRobot = new ControlledRobot(user_position, 0);
-        //room.addControlledRobot(userRobot);
-
+        // Initialise logging
         Log log = new Log();
         log.initLogs(logFile);
 

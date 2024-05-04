@@ -84,8 +84,6 @@ public class ControlledRobot {
         updatePosition();
     }
 
-
-
     private void updatePosition() {
         // Update robot's position
         shape.setCenterX(position.getX());
