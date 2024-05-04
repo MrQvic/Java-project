@@ -18,7 +18,7 @@ public class AddControlledRobotButton extends Button {
     public AddControlledRobotButton(RobotSimulator simulator, Room room, Pane roomPane) {
         super("Add Controlled Robot");
         this.setOnAction(e -> {
-            if (!simulator.isSimulationStarted()){
+            if (!simulator.isSimulationStarted() && !room.isControlledRobotSet()){
                 // Create a dialog for user input
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Add Controlled Robot");

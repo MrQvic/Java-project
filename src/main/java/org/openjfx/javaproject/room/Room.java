@@ -82,22 +82,24 @@ public class Room {
     }
 
     public boolean canCreate(Position position, double radius){
-        // loop trough robots
+        // loop through robots
         for (Autorobot robot : robots) {
             if (position.isNear(robot.getPosition(), radius + robot.getSize())) {
                 return false;
             }
         }
-
-        // loop trough obstacles
+        // loop through obstacles
         for (Obstacle obstacle : obstacles) {
             if (position.isNear(obstacle.getPosition(), radius + obstacle.getSize())) {
                 return false;
             }
         }
+        double x = position.getX();
+        double y = position.getY();
 
-        return true;
+        return !(x - radius < 0) && !(x + radius > width) && !(y - radius < 0) && !(y + radius > height);
     }
+
 
     public ControlledRobot getControlledRobot(){
         return this.controlledRobot;

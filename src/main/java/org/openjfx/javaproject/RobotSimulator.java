@@ -68,7 +68,7 @@ public class RobotSimulator extends Application {
 
                 log.recordLogs(stepNumber, log.formatToJson(positions));
                 if (stepNumber % 120 == 0) { // Output to file every 2 seconds
-                    log.bufferOut(logFile);
+                    //log.bufferOut(logFile);
                 }
             }
         };

@@ -34,6 +34,9 @@ public class ControlledRobot {
     }
 
     public static ControlledRobot create(Room room, Position position, double angle) {
+        if (!room.canCreate(position, RADIUS)) {    //there is obstacle
+            return null;
+        }
         ControlledRobot robot = new ControlledRobot(position, angle);
         room.addControlledRobot(robot);
         return robot;
