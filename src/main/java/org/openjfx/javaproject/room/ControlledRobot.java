@@ -1,4 +1,6 @@
 package org.openjfx.javaproject.room;
+import org.openjfx.javaproject.common.Obstacle;
+import org.openjfx.javaproject.room.CircleObstacle;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -50,17 +52,27 @@ public class ControlledRobot {
             double velX = Math.cos(Math.toRadians(angle)) * SPEED * TIME_STEP;
             double velY = Math.sin(Math.toRadians(angle)) * SPEED * TIME_STEP;
 
+            // Calculate new position
+            double nextX = position.getX() + velX;
+            double nextY = position.getY() + velY;
+
+            // Check collision with robots
             for (Autorobot robot : room.getRobots()) {
-                if (checkCollision(robot)) {
+                if (checkCollision(robot, nextX, nextY)) {
+                    updateDirectionLine();
                     return;
                 }
             }
 
-            // Change robot position
-            double nextX = position.getX() + velX;
-            double nextY = position.getY() + velY;
+            // Check collision with obstacles
+            for (Obstacle obstacle : room.getObstacles()) {
+                if (checkCollision(obstacle, nextX, nextY)) {
+                    updateDirectionLine();
+                    return;
+                }
+            }
 
-            // Collision check
+            // Collision check with room boundaries
             if (nextX >= RADIUS && nextX <= room.getWidth() - RADIUS) {
                 position.setX(nextX);
             }
@@ -68,10 +80,11 @@ public class ControlledRobot {
                 position.setY(nextY);
             }
         }
-
         updateDirectionLine();
         updatePosition();
     }
+
+
 
     private void updatePosition() {
         // Update robot's position
@@ -141,11 +154,25 @@ public class ControlledRobot {
         return angle;
     }
 
-    private boolean checkCollision(Autorobot robot) {
-        double dx = position.getX() - robot.getPosition().getX();
-        double dy = position.getY() - robot.getPosition().getY();
+    private boolean checkCollision(Autorobot robot, double nextX, double nextY) {
+        double dx = nextX - robot.getPosition().getX();
+        double dy = nextY - robot.getPosition().getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
 
         return distance < (RADIUS + robot.getSize());
     }
+
+    private boolean checkCollision(Obstacle obstacle, double nextX, double nextY) {
+        if (obstacle instanceof CircleObstacle circleObstacle) {
+            double dx = nextX - circleObstacle.getPosition().getX();
+            double dy = nextY - circleObstacle.getPosition().getY();
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < (RADIUS + circleObstacle.getSize());
+        } else {
+            // Handle other types of obstacles here, if needed
+            return false;
+        }
+    }
+
+
 }
