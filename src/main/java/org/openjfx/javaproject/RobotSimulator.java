@@ -10,10 +10,15 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
+import javafx.event.EventHandler;
 
 import org.openjfx.javaproject.room.Autorobot;
 
+import org.openjfx.javaproject.room.ControlledRobot;
+import org.openjfx.javaproject.room.Position;
 import org.openjfx.javaproject.room.Room;
 import org.openjfx.javaproject.ui.buttons.AddObstacleButton;
 import org.openjfx.javaproject.ui.buttons.AddRobotButton;
@@ -37,6 +42,10 @@ public class RobotSimulator extends Application {
         Room room = getRoom();
         Pane roomPane = room.create();
 
+        Position user_position = new Position(200, 200);
+        ControlledRobot userRobot = new ControlledRobot(user_position, 0);
+        room.addControlledRobot(userRobot);
+
         Log log = new Log();
         log.initLogs(logFile);
 
@@ -53,6 +62,9 @@ public class RobotSimulator extends Application {
                     robot.update(room);
                     System.out.println("ROBOT\n");
                     positions.add(robot.getPositionAsString());
+                }
+                if(room.isControlledRobotSet()){
+                    room.controlledRobot.update(room);
                 }
                 stepNumber++;
                 System.out.println(stepNumber);
@@ -87,8 +99,39 @@ public class RobotSimulator extends Application {
 
         Scene scene = new Scene(mainPane, room.getWidth() + 150, room.getHeight()); // Added 150 for the width of buttonPane
 
+        if (room.isControlledRobotSet()) {
+            roomPane.getChildren().add(room.controlledRobot.getShape());
+            System.out.println("Requesting focus for controlled robot shape");
+            room.controlledRobot.getShape().requestFocus();
+        } else {
+            System.out.println("Controlled robot is not set");
+        }
+
+        scene.setOnKeyPressed(event -> {
+            System.out.println("Key Pressed");
+            if (room.isControlledRobotSet()) {
+                room.controlledRobot.keyPressed(event);
+            }
+        });
+
+        scene.setOnKeyReleased(event -> {
+            System.out.println("Key Released");
+            if (room.isControlledRobotSet()) {
+                room.controlledRobot.keyReleased(event);
+            }
+        });
+
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        // Debugging: Check which node has the focus
+        scene.focusOwnerProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                System.out.println("Focus is on: " + newValue.getClass().getSimpleName());
+            } else {
+                System.out.println("No focus");
+            }
+        });
     }
 
     private static Room getRoom() {
@@ -117,5 +160,6 @@ public class RobotSimulator extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
 

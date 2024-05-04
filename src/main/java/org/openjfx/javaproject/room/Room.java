@@ -15,6 +15,7 @@ public class Room {
     private final List<Obstacle> obstacles; // List of obstacles
 
     private final List<Autorobot> robots;
+    public ControlledRobot controlledRobot;
 
     public Room(double width, double height) {
         this.width = width;
@@ -67,6 +68,18 @@ public class Room {
         this.robots.clear();
     }
 
+    public boolean isControlledRobotSet(){
+        return this.controlledRobot != null;
+    }
+    public boolean addControlledRobot(ControlledRobot controlledRobot) {
+        if (this.controlledRobot == null) {
+            this.controlledRobot = controlledRobot;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean canCreate(Position position, double radius){
         // loop trough robots
         for (Autorobot robot : robots) {
@@ -84,4 +97,5 @@ public class Room {
 
         return true;
     }
+
 }
