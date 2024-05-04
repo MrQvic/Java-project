@@ -35,6 +35,10 @@ public class Autorobot {
     }
 
     public void update(Room room) {
+        //DEBUG
+        //for (Autorobot robot : room.getRobots()) {
+        //    System.out.println("New robot added at position: " + robot.getPosition());
+        //}
         // Calculate velocity vector components
         double velX = SPEED * Math.cos(angle);
         double velY = SPEED * Math.sin(angle);
@@ -66,6 +70,8 @@ public class Autorobot {
         position.setX(nextX);
         position.setY(nextY);
         updatePosition();
+
+
     }
 
     private boolean isNearEdge(double nextX, double nextY, Room room) {
