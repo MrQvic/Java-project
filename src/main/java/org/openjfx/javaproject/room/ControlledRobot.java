@@ -7,7 +7,7 @@ import org.openjfx.javaproject.common.Obstacle;
 
 public class ControlledRobot {
     private static final double TIME_STEP = 0.016; // 60 FPS
-    private static final double SPEED = 50; // pixels per second
+    private static final double SPEED = 100; // pixels per second
     private static final double RADIUS = 10; // radius of the robot
 
     private final Position position;
@@ -33,31 +33,34 @@ public class ControlledRobot {
     }
 
     public void update(Room room) {
-        // Calculate velocity vector components based on user input
-        double velX = (rightPressed ? 1 : 0) - (leftPressed ? 1 : 0);
-        double velY = (downPressed ? 1 : 0) - (upPressed ? 1 : 0);
-
-        // Normalize the velocity vector
-        double length = Math.sqrt(velX * velX + velY * velY);
-        if (length != 0) {
-            velX /= length;
-            velY /= length;
+        // Rotate left and right
+        if (leftPressed) {
+            angle -= 5;
+        }
+        if (rightPressed) {
+            angle += 5;
         }
 
-        // Move the robot
-        double nextX = position.getX() + velX * SPEED * TIME_STEP;
-        double nextY = position.getY() + velY * SPEED * TIME_STEP;
-        System.out.println(position.getX());
-        // Check for collision with room edges
-        if (nextX >= RADIUS && nextX <= room.getWidth() - RADIUS) {
-            position.setX(nextX);
-        }
-        if (nextY >= RADIUS && nextY <= room.getHeight() - RADIUS) {
-            position.setY(nextY);
+        if (upPressed) {
+            double velX = Math.cos(Math.toRadians(angle)) * SPEED * TIME_STEP;
+            double velY = Math.sin(Math.toRadians(angle)) * SPEED * TIME_STEP;
+
+            // Change robot position
+            double nextX = position.getX() + velX;
+            double nextY = position.getY() + velY;
+
+            // Collision check
+            if (nextX >= RADIUS && nextX <= room.getWidth() - RADIUS) {
+                position.setX(nextX);
+            }
+            if (nextY >= RADIUS && nextY <= room.getHeight() - RADIUS) {
+                position.setY(nextY);
+            }
         }
 
         updatePosition();
     }
+
 
     private void updatePosition() {
         // Update robot's position
