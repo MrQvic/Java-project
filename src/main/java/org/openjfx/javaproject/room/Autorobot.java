@@ -66,20 +66,16 @@ public class Autorobot {
         if(room.isControlledRobotSet()){
             ControlledRobot controlledRobot = room.getControlledRobot();
             if (controlledRobot != null && checkCollision(controlledRobot, nextX, nextY)) {
-                // If collision with the controlled robot, turn away
-                //angle += 0.1;
-                //return;
-                // Calculate vector from this robot to the controlled robot
                 double dx = controlledRobot.getPosition().getX() - position.getX();
                 double dy = controlledRobot.getPosition().getY() - position.getY();
 
-                // Calculate the angle away from the controlled robot
+                // Escape angle
                 double angleAway = Math.atan2(-dy, -dx);
 
-                // Update the robot's angle to move away from the controlled robot
+                // Set escape angle
                 angle = angleAway;
 
-                // Move in the new direction
+                // RUN AWAY
                 velX = SPEED * Math.cos(angleAway);
                 velY = SPEED * Math.sin(angleAway);
                 nextX = position.getX() + velX * TIME_STEP;
@@ -104,8 +100,6 @@ public class Autorobot {
         position.setX(nextX);
         position.setY(nextY);
         updatePosition();
-
-
     }
 
     private boolean isNearEdge(double nextX, double nextY, Room room) {
