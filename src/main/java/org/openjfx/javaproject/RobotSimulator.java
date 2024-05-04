@@ -32,6 +32,7 @@ import java.util.Optional;
 public class RobotSimulator extends Application {
     private AnimationTimer timer;
     private boolean isSimulationStarted = false;
+    private Pane roomPane;
 
     String logFile = "log.txt";
 
@@ -40,12 +41,12 @@ public class RobotSimulator extends Application {
 
         // Create a dialog for input
         Room room = getRoom();
-        Pane roomPane = room.create();
+        //Pane roomPane = room.create();
+        roomPane = room.create();
 
         Position user_position = new Position(200, 200);
         ControlledRobot userRobot = new ControlledRobot(user_position, 0);
         room.addControlledRobot(userRobot);
-
         Log log = new Log();
         log.initLogs(logFile);
 
@@ -99,10 +100,18 @@ public class RobotSimulator extends Application {
 
         Scene scene = new Scene(mainPane, room.getWidth() + 150, room.getHeight()); // Added 150 for the width of buttonPane
 
+//        if (room.isControlledRobotSet()) {
+//            roomPane.getChildren().add(room.controlledRobot.getShape());
+//            System.out.println("Requesting focus for controlled robot shape");
+//            room.controlledRobot.getShape().requestFocus();
+//        } else {
+//            System.out.println("Controlled robot is not set");
+//        }
+
         if (room.isControlledRobotSet()) {
             roomPane.getChildren().add(room.controlledRobot.getShape());
             System.out.println("Requesting focus for controlled robot shape");
-            room.controlledRobot.getShape().requestFocus();
+            roomPane.requestFocus(); // Request focus on the roomPane
         } else {
             System.out.println("Controlled robot is not set");
         }
@@ -120,6 +129,7 @@ public class RobotSimulator extends Application {
                 room.controlledRobot.keyReleased(event);
             }
         });
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -151,6 +161,7 @@ public class RobotSimulator extends Application {
     public void startSimulation() {
         isSimulationStarted = true;
         timer.start();
+        roomPane.requestFocus();
     }
 
     public boolean isSimulationStarted() {

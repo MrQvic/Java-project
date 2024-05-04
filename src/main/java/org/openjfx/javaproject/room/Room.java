@@ -71,6 +71,7 @@ public class Room {
     public boolean isControlledRobotSet(){
         return this.controlledRobot != null;
     }
+
     public boolean addControlledRobot(ControlledRobot controlledRobot) {
         if (this.controlledRobot == null) {
             this.controlledRobot = controlledRobot;
