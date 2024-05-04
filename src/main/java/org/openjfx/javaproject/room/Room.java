@@ -54,7 +54,9 @@ public class Room {
     }
 
     public void addRobot(Autorobot robot) {
-        this.robots.add(robot);
+        if (!this.robots.contains(robot)) {
+            this.robots.add(robot);
+        }
     }
 
     public List<Autorobot> getRobots() {

@@ -28,6 +28,7 @@ public class AddRobotButton extends Button {
                     int x = Integer.parseInt(coordinates[0].trim());
                     int y = Integer.parseInt(coordinates[1].trim());
                     Autorobot newRobot = Autorobot.create(room, new Position(x,y), 0);
+
                     if (newRobot == null) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialog");
@@ -35,7 +36,6 @@ public class AddRobotButton extends Button {
                         alert.setContentText("Robot could not be created at the specified position due to an obstacle.");
                         alert.showAndWait();
                     } else {
-                        room.addRobot(newRobot);
                         roomPane.getChildren().add(newRobot.getShape());
                     }
                 });

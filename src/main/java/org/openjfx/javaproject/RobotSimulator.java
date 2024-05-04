@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.Button;
 
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -21,6 +22,7 @@ import org.openjfx.javaproject.ui.buttons.StartButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class RobotSimulator extends Application {
     private AnimationTimer timer;
@@ -30,8 +32,9 @@ public class RobotSimulator extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Create a room
-        Room room = new Room(500, 500);
+
+        // Create a dialog for input
+        Room room = getRoom();
         Pane roomPane = room.create();
 
         Log log = new Log();
@@ -86,6 +89,20 @@ public class RobotSimulator extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private static Room getRoom() {
+        TextInputDialog dialog = new TextInputDialog("500");
+        dialog.setTitle("Room Size Input");
+        dialog.setHeaderText("Enter Room Size:");
+        dialog.setContentText("Please enter room size:");
+        Optional<String> result = dialog.showAndWait();
+        int roomSize = 500; // default value
+        if (result.isPresent()){
+            roomSize = Integer.parseInt(result.get());
+        }
+        // Create a room with user input size
+        return new Room(roomSize, roomSize);
     }
 
     public void startSimulation() {
