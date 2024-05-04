@@ -10,8 +10,14 @@ import java.io.IOException;
 public class Log {
     private List<List<String>> recordedPositions;
 
-    public void initLogs() {
+    public void initLogs(String filename) {
         recordedPositions = new ArrayList<>();
+
+        try (FileWriter writer = new FileWriter(filename, false)) {
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void recordLogs(int stepNumber, List<String> positions) {

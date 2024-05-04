@@ -26,6 +26,8 @@ public class RobotSimulator extends Application {
     private AnimationTimer timer;
     private boolean isSimulationStarted = false;
 
+    String logFile = "log.txt";
+
     @Override
     public void start(Stage primaryStage) {
         // Create a room
@@ -33,7 +35,7 @@ public class RobotSimulator extends Application {
         Pane roomPane = room.create();
 
         Log log = new Log();
-        log.initLogs();
+        log.initLogs(logFile);
 
 
 
@@ -46,6 +48,7 @@ public class RobotSimulator extends Application {
 
                 for (Autorobot robot : room.getRobots()) {
                     robot.update(room);
+                    System.out.println("ROBOT\n");
                     positions.add(robot.getPositionAsString());
                 }
                 stepNumber++;
@@ -53,7 +56,7 @@ public class RobotSimulator extends Application {
 
                 log.recordLogs(stepNumber, log.formatToJson(positions));
                 if (stepNumber % 120 == 0) { // Output to file every 2 seconds
-                    log.bufferOut("log.txt");
+                    log.bufferOut(logFile);
                 }
             }
         };
