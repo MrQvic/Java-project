@@ -20,10 +20,7 @@ import org.openjfx.javaproject.room.Autorobot;
 import org.openjfx.javaproject.room.ControlledRobot;
 import org.openjfx.javaproject.room.Position;
 import org.openjfx.javaproject.room.Room;
-import org.openjfx.javaproject.ui.buttons.AddObstacleButton;
-import org.openjfx.javaproject.ui.buttons.AddRobotButton;
-import org.openjfx.javaproject.ui.buttons.PauseButton;
-import org.openjfx.javaproject.ui.buttons.StartButton;
+import org.openjfx.javaproject.ui.buttons.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +41,10 @@ public class RobotSimulator extends Application {
         //Pane roomPane = room.create();
         roomPane = room.create();
 
-        Position user_position = new Position(200, 200);
-        ControlledRobot userRobot = new ControlledRobot(user_position, 0);
-        room.addControlledRobot(userRobot);
+        //Position user_position = new Position(200, 200);
+        //ControlledRobot userRobot = new ControlledRobot(user_position, 0);
+        //room.addControlledRobot(userRobot);
+
         Log log = new Log();
         log.initLogs(logFile);
 
@@ -86,11 +84,13 @@ public class RobotSimulator extends Application {
         // Create an add robot button
         AddRobotButton addRobotButton = new AddRobotButton(this, room, roomPane);
 
+        AddControlledRobotButton addControlledRobotButton = new AddControlledRobotButton(this, room, roomPane);
+
         Button addObstacleButton = new AddObstacleButton(this, room, roomPane);
 
         // Create a new pane for buttons
         VBox buttonPane = new VBox(10); // 10 is the spacing between buttons
-        buttonPane.getChildren().addAll(startButton, pauseButton, addRobotButton, addObstacleButton);
+        buttonPane.getChildren().addAll(startButton, pauseButton, addRobotButton, addObstacleButton, addControlledRobotButton);
 
 
         // Create a main pane and add roomPane and buttonPane
