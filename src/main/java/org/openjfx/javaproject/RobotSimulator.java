@@ -1,5 +1,10 @@
 package org.openjfx.javaproject;
+import org.openjfx.javaproject.room.Autorobot;
 
+
+import javafx.scene.layout.StackPane;
+
+import javafx.geometry.Pos;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,7 +20,6 @@ import javafx.stage.Stage;
 
 import javafx.event.EventHandler;
 
-import org.openjfx.javaproject.room.Autorobot;
 
 import org.openjfx.javaproject.room.ControlledRobot;
 import org.openjfx.javaproject.room.Position;
@@ -48,8 +52,6 @@ public class RobotSimulator extends Application {
         Log log = new Log();
         log.initLogs(logFile);
 
-
-
         timer = new AnimationTimer() {
             int stepNumber = 0;
             @Override
@@ -75,48 +77,36 @@ public class RobotSimulator extends Application {
             }
         };
 
-        // Create a start button
+        // Create Button Instances
+        AddControlledRobotButton addControlledRobotButton = new AddControlledRobotButton(this, room, roomPane);
+        AddRobotButton addRobotButton = new AddRobotButton(this, room, roomPane);
+        Button addObstacleButton = new AddObstacleButton(this, room, roomPane);
         Button startButton = new StartButton(this);
-
-        // Create a pause button
         PauseButton pauseButton = new PauseButton(timer);
 
-        // Create an add robot button
-        AddRobotButton addRobotButton = new AddRobotButton(this, room, roomPane);
-
-        AddControlledRobotButton addControlledRobotButton = new AddControlledRobotButton(this, room, roomPane);
-
-        Button addObstacleButton = new AddObstacleButton(this, room, roomPane);
+        // Set Button Sizes
+        addControlledRobotButton.setPrefSize(135,12);
+        addObstacleButton.setPrefSize(135,12);
+        addRobotButton.setPrefSize(135,12);
+        startButton.setPrefSize(135,12);
+        pauseButton.setPrefSize(135,12);
 
         // Create a new pane for buttons
-        VBox buttonPane = new VBox(10); // 10 is the spacing between buttons
+        VBox buttonPane = new VBox(10);
+        buttonPane.setAlignment(Pos.TOP_CENTER);
         buttonPane.getChildren().addAll(startButton, pauseButton, addRobotButton, addObstacleButton, addControlledRobotButton);
-
 
         // Create a main pane and add roomPane and buttonPane
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(roomPane);
         mainPane.setRight(buttonPane);
 
-        Scene scene = new Scene(mainPane, room.getWidth() + 150, room.getHeight()); // Added 150 for the width of buttonPane
+        // Main Scene
+        mainPane.setStyle("-fx-padding: 10px 10px 10px 10px;");
+        Scene scene = new Scene(mainPane, room.getWidth() + 170, room.getHeight() + 20); // Added 150 for the width of buttonPane
 
-//        if (room.isControlledRobotSet()) {
-//            roomPane.getChildren().add(room.controlledRobot.getShape());
-//            System.out.println("Requesting focus for controlled robot shape");
-//            room.controlledRobot.getShape().requestFocus();
-//        } else {
-//            System.out.println("Controlled robot is not set");
-//        }
 
-        if (room.isControlledRobotSet()) {
-            roomPane.getChildren().add(room.controlledRobot.getShape());
-            roomPane.getChildren().add(room.controlledRobot.getDirectionLine());
-            System.out.println("Requesting focus for controlled robot shape");
-            roomPane.requestFocus(); // Request focus on the roomPane
-        } else {
-            System.out.println("Controlled robot is not set");
-        }
-
+        // Key Input Listeners
         scene.setOnKeyPressed(event -> {
             System.out.println("Key Pressed");
             if (room.isControlledRobotSet()) {
