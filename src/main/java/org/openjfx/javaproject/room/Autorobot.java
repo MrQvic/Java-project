@@ -1,6 +1,5 @@
 package org.openjfx.javaproject.room;
 
-import javafx.scene.robot.Robot;
 import javafx.scene.shape.Circle;
 import org.openjfx.javaproject.common.Obstacle;
 
@@ -188,17 +187,14 @@ public class Autorobot {
         double dy = nextY - obstacle.getPosition().getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
 
-        return distance < (RADIUS + obstacle.getSize());
+        return distance < (RADIUS + obstacle.getSize() + SAFE_ZONE);
     }
 
     private boolean checkCollisionWithEdge(double nextX, double nextY, Room room) {
         if (nextX - RADIUS < 0 || nextX + RADIUS > room.getWidth()) {
             return true;
         }
-        if (nextY - RADIUS < 0 || nextY + RADIUS > room.getHeight()) {
-            return true;
-        }
-        return false;
+        return nextY - RADIUS < 0 || nextY + RADIUS > room.getHeight();
     }
 
     private boolean checkCollisionsWithObstacles(Room room, double nextX, double nextY) {
