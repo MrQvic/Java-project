@@ -36,71 +36,81 @@ public class Autorobot {
     }
 
     public void update(Room room) {
-        //DEBUG
-        //for (Autorobot robot : room.getRobots()) {
-        //    System.out.println("New robot added at position: " + robot.getPosition());
-        //}
-        // Calculate velocity vector components
+
+        // Next Vector
         double velX = SPEED * Math.cos(angle);
         double velY = SPEED * Math.sin(angle);
 
-        // Predict next position
+        // Next position
         double nextX = position.getX() + velX * TIME_STEP;
         double nextY = position.getY() + velY * TIME_STEP;
+
+        boolean hasCollision = false;
 
         for (Obstacle obstacle : room.getObstacles()) {
             double distanceToObstacle = Math.hypot(position.getX() - obstacle.getPosition().getX(), position.getY() - obstacle.getPosition().getY());
             if (distanceToObstacle < RADIUS + 30  + SAFE_ZONE) { //TODO: 30 is radius of the obstacle!!!!!!!
                 // Avoid the obstacle
                 angle += 0.1;
+                hasCollision = true;
             }
         }
 
-        for (Autorobot robot : room.getRobots()){
-            if (this != robot){
-                //autobot x autbot collision logic
-                //checkCollision(robot);
+        for (Autorobot otherRobot : room.getRobots()){
+            if (this != otherRobot && checkCollision(otherRobot, nextX, nextY)) {
+
+                double dx = otherRobot.getPosition().getX() - position.getX();
+                double dy = otherRobot.getPosition().getY() - position.getY();
+
+                angle = Math.atan2(-dy, -dx);
+
+                nextX = position.getX() + SPEED * Math.cos(angle) * TIME_STEP;
+                nextY = position.getY() + SPEED * Math.sin(angle) * TIME_STEP;
+                hasCollision = true;
             }
         }
 
-        if(room.isControlledRobotSet()){
-            ControlledRobot controlledRobot = room.getControlledRobot();
-            if (controlledRobot != null && checkCollision(controlledRobot, nextX, nextY)) {
-                double dx = controlledRobot.getPosition().getX() - position.getX();
-                double dy = controlledRobot.getPosition().getY() - position.getY();
+        if (!hasCollision) {
+            if(room.isControlledRobotSet()){
+                ControlledRobot controlledRobot = room.getControlledRobot();
+                if (controlledRobot != null && checkCollision(controlledRobot, nextX, nextY)) {
+                    double dx = controlledRobot.getPosition().getX() - position.getX();
+                    double dy = controlledRobot.getPosition().getY() - position.getY();
 
-                // Escape angle
-                double angleAway = Math.atan2(-dy, -dx);
+                    // Escape angle
+                    double angleAway = Math.atan2(-dy, -dx);
 
-                // Set escape angle
-                angle = angleAway;
+                    // Set escape angle
+                    angle = angleAway;
 
-                // RUN AWAY
-                velX = SPEED * Math.cos(angleAway);
-                velY = SPEED * Math.sin(angleAway);
-                nextX = position.getX() + velX * TIME_STEP;
-                nextY = position.getY() + velY * TIME_STEP;
+                    // RUN AWAY
+                    velX = SPEED * Math.cos(angleAway);
+                    velY = SPEED * Math.sin(angleAway);
+                    nextX = position.getX() + velX * TIME_STEP;
+                    nextY = position.getY() + velY * TIME_STEP;
+                }
+            }
+
+            if(isInViewOfEdgeCenter(nextX, nextY, room)){
+                angle += 0.1;
+            } else if (isInViewOfEdgeLeft(nextX, nextY, room)){
+                angle += 0.1;
+            } else if (isInViewOfEdgeRight(nextX, nextY, room)) {
+                angle -= 0.1;
+            }
+
+            // Check for collision with room edges
+            if (isNearEdge(nextX, nextY, room)) {
+                angle += 0.1;
             }
         }
 
-
-        if(isInViewOfEdgeCenter(nextX, nextY, room)){
-            angle += 0.1;
-        } else if (isInViewOfEdgeLeft(nextX, nextY, room)){
-            angle += 0.1;
-        } else if (isInViewOfEdgeRight(nextX, nextY, room)) {
-            angle -= 0.1;
-        }
-
-        // Check for collision with room edges
-        if (isNearEdge(nextX, nextY, room)) {
-            angle += 0.1;
-        }
         // Update position
         position.setX(nextX);
         position.setY(nextY);
         updatePosition();
     }
+
 
     private boolean isNearEdge(double nextX, double nextY, Room room) {
         double leftEdge = RADIUS + SAFE_ZONE;
@@ -171,12 +181,21 @@ public class Autorobot {
         return false;
     }
 
+    // Override collision detection methods
     private boolean checkCollision(ControlledRobot robot, double nextX, double nextY) {
         double dx = nextX - robot.getPosition().getX();
         double dy = nextY - robot.getPosition().getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
 
-        return distance < (RADIUS + robot.getSize() + 10);
+        return distance < (RADIUS + robot.getSize() + SAFE_ZONE);
+    }
+
+    private boolean checkCollision(Autorobot robot, double nextX, double nextY) {
+        double dx = nextX - robot.getPosition().getX();
+        double dy = nextY - robot.getPosition().getY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < (RADIUS + robot.getSize() + SAFE_ZONE);
     }
 }
 
