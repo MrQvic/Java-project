@@ -36,6 +36,7 @@ public class Autorobot {
     }
 
     public void update(Room room) {
+        boolean hasCollision = false;
 
         // Next Vector
         double velX = SPEED * Math.cos(angle);
@@ -45,15 +46,12 @@ public class Autorobot {
         double nextX = position.getX() + velX * TIME_STEP;
         double nextY = position.getY() + velY * TIME_STEP;
 
-        boolean hasCollision = false;
+        checkCollisionsWithObstacles(room, nextX, nextY);
 
-        for (Obstacle obstacle : room.getObstacles()) {
-            double distanceToObstacle = Math.hypot(position.getX() - obstacle.getPosition().getX(), position.getY() - obstacle.getPosition().getY());
-            if (distanceToObstacle < RADIUS + 30  + SAFE_ZONE) { //TODO: 30 is radius of the obstacle!!!!!!!
-                // Avoid the obstacle
-                angle += 0.1;
-                hasCollision = true;
-            }
+        if (checkCollisionWithEdge(nextX, nextY, room)) {
+            // Změnit směr
+            angle += 0.2;
+            hasCollision = true;
         }
 
         for (Autorobot otherRobot : room.getRobots()){
@@ -88,37 +86,28 @@ public class Autorobot {
                     velY = SPEED * Math.sin(angleAway);
                     nextX = position.getX() + velX * TIME_STEP;
                     nextY = position.getY() + velY * TIME_STEP;
+
+                    if(checkCollisionWithEdge(nextX,nextY,room) || checkCollisionsWithObstacles(room,nextX,nextY)){
+                        hasCollision = true;
+                    }
                 }
             }
-
-            if(isInViewOfEdgeCenter(nextX, nextY, room)){
-                angle += 0.1;
-            } else if (isInViewOfEdgeLeft(nextX, nextY, room)){
-                angle += 0.1;
-            } else if (isInViewOfEdgeRight(nextX, nextY, room)) {
-                angle -= 0.1;
-            }
-
-            // Check for collision with room edges
-            if (isNearEdge(nextX, nextY, room)) {
-                angle += 0.1;
-            }
+        }
+        if(isInViewOfEdgeCenter(nextX, nextY, room)){
+            angle += 0.1;
+        } else if (isInViewOfEdgeLeft(nextX, nextY, room)){
+            angle += 0.1;
+        } else if (isInViewOfEdgeRight(nextX, nextY, room)) {
+            angle -= 0.1;
         }
 
         // Update position
-        position.setX(nextX);
-        position.setY(nextY);
+        if(!hasCollision){
+            position.setX(nextX);
+            position.setY(nextY);
+
+        }
         updatePosition();
-    }
-
-
-    private boolean isNearEdge(double nextX, double nextY, Room room) {
-        double leftEdge = RADIUS + SAFE_ZONE;
-        double rightEdge = room.getWidth() - RADIUS - SAFE_ZONE;
-        double topEdge = RADIUS + SAFE_ZONE;
-        double bottomEdge = room.getHeight() - RADIUS - SAFE_ZONE;
-
-        return nextX < leftEdge || nextX > rightEdge || nextY < topEdge || nextY > bottomEdge;
     }
 
     private void updatePosition() {
@@ -177,10 +166,6 @@ public class Autorobot {
     }
     public double getAngle(){ return angle; }
 
-    private boolean checkCollision(Autorobot robot) {
-        return false;
-    }
-
     // Override collision detection methods
     private boolean checkCollision(ControlledRobot robot, double nextX, double nextY) {
         double dx = nextX - robot.getPosition().getX();
@@ -197,18 +182,37 @@ public class Autorobot {
 
         return distance < (RADIUS + robot.getSize() + SAFE_ZONE);
     }
+
+    private boolean checkCollisionObstacle(Obstacle obstacle, double nextX, double nextY) {
+        double dx = nextX - obstacle.getPosition().getX();
+        double dy = nextY - obstacle.getPosition().getY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < (RADIUS + obstacle.getSize());
+    }
+
+    private boolean checkCollisionWithEdge(double nextX, double nextY, Room room) {
+        if (nextX - RADIUS < 0 || nextX + RADIUS > room.getWidth()) {
+            return true;
+        }
+        if (nextY - RADIUS < 0 || nextY + RADIUS > room.getHeight()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkCollisionsWithObstacles(Room room, double nextX, double nextY) {
+        for (Obstacle obstacle : room.getObstacles()) {
+            if (checkCollisionObstacle(obstacle, nextX, nextY)) {
+                // Calculate angle to obstacle
+                double dx = obstacle.getPosition().getX() - position.getX();
+                double dy = obstacle.getPosition().getY() - position.getY();
+                double angleToObstacle = Math.atan2(dy, dx);
+                // Change direction
+                angle = angleToObstacle + Math.PI / 2; // 90 degrees
+                return true;
+            }
+        }
+        return false;
+    }
 }
-
-
-
-
-//private boolean isInViewOfEdge(double nextX, double nextY, Room room) {
-//    // Calculate the corners of the view rectangle
-//    double leftX = nextX + VIEW_DISTANCE * Math.cos(angle) - VIEW_WIDTH * Math.sin(angle) / 2;
-//    double leftY = nextY + VIEW_DISTANCE * Math.sin(angle) + VIEW_WIDTH * Math.cos(angle) / 2;
-//    double rightX = nextX + VIEW_DISTANCE * Math.cos(angle) + VIEW_WIDTH * Math.sin(angle) / 2;
-//    double rightY = nextY + VIEW_DISTANCE * Math.sin(angle) - VIEW_WIDTH * Math.cos(angle) / 2;
-//
-//    // Check if any of the corners are outside the room
-//    return leftX < 0 || rightX > room.getWidth() || leftY < 0 || rightY > room.getHeight();
-//}
