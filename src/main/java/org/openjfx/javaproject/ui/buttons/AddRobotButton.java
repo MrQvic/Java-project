@@ -12,8 +12,18 @@ import org.openjfx.javaproject.room.Room;
 
 import java.util.Optional;
 
+/**
+ * A button used to add a robot to the simulation room.
+ */
 public class AddRobotButton extends Button {
 
+    /**
+     * Constructs an AddRobotButton.
+     *
+     * @param simulator The RobotSimulator instance managing the simulation.
+     * @param room      The Room instance representing the simulation room.
+     * @param roomPane  The Pane where the simulation room is displayed.
+     */
     public AddRobotButton(RobotSimulator simulator, Room room, Pane roomPane) {
         super("Add Robot");
         this.setOnAction(e -> {

@@ -7,9 +7,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
+/**
+ * The Log class manages recording and buffering of simulation logs.
+ */
 public class Log {
     private List<List<String>> recordedPositions;
 
+    /**
+     * Initializes the log file.
+     * @param filename The name of the log file.
+     */
     public void initLogs(String filename) {
         recordedPositions = new ArrayList<>();
 
@@ -20,6 +27,11 @@ public class Log {
         }
     }
 
+    /**
+     * Records the positions of robots at a given time step.
+     * @param stepNumber The time step.
+     * @param positions The list of positions of robots.
+     */
     public void recordLogs(int stepNumber, List<String> positions) {
         StringBuilder lineBuilder = new StringBuilder("{\"step\": " + stepNumber + ", ");
         lineBuilder.append("\"robots\" : [");
@@ -32,6 +44,11 @@ public class Log {
         recordedPositions.add(List.of(lineBuilder.toString()));
     }
 
+    /**
+     * Retrieves the recorded logs at a specific time step.
+     * @param timeStep The time step to retrieve logs for.
+     * @return A list of positions of robots at the specified time step.
+     */
     public List<String> getLogs(int timeStep) {
         if (timeStep >= 0 && timeStep < recordedPositions.size()) {
             return recordedPositions.get(timeStep);
@@ -39,10 +56,18 @@ public class Log {
         return null;
     }
 
+    /**
+     * Gets the total number of time steps recorded in the log.
+     * @return The total number of time steps.
+     */
     public int getTotalTimeSteps() {
         return recordedPositions.size();
     }
 
+    /**
+     * Flushes recorded logs to a log file.
+     * @param filename The name of the log file.
+     */
     public void bufferOut(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) { // Append mode
             for (List<String> stepData : recordedPositions) {
@@ -57,6 +82,11 @@ public class Log {
         recordedPositions.clear();
     }
 
+    /**
+     * Formats the positions of robots to JSON format.
+     * @param positions The list of positions to format.
+     * @return A list of positions in JSON format.
+     */
     public List<String> formatToJson(List<String> positions) {
         List<String> jsonPositions = new ArrayList<>();
         for (String position : positions) {

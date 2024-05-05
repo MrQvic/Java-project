@@ -37,7 +37,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.stage.FileChooser;
 
-
+/**
+ * The main class for the Robot Simulator application.
+ */
 public class RobotSimulator extends Application {
     private AnimationTimer timer;
     private boolean isSimulationStarted = false;
@@ -45,6 +47,10 @@ public class RobotSimulator extends Application {
 
     String logFile = "log.txt";
 
+    /**
+     * Initializes and starts the Robot Simulator application.
+     * @param primaryStage The primary stage of the application.
+     */
     @Override
     public void start(Stage primaryStage) {
         Room room = getRoom();
@@ -175,7 +181,10 @@ public class RobotSimulator extends Application {
         primaryStage.show();
     }
 
-
+    /**
+     * Creates and configures the room for the simulation.
+     * @return The configured room.
+     */
     private Room getRoom() {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Room Configuration");
@@ -225,21 +234,35 @@ public class RobotSimulator extends Application {
         return room[0];
     }
 
+    /**
+     * Stops the simulation timer and resets the simulation status.
+     */
     public void resetTimer(){
         timer.stop();
         isSimulationStarted = false;
     }
 
+    /**
+     * Starts the simulation.
+     */
     public void startSimulation() {
         isSimulationStarted = true;
         timer.start();
         roomPane.requestFocus();
     }
 
+    /**
+     * Checks if the simulation has started.
+     * @return True if the simulation is started, false otherwise.
+     */
     public boolean isSimulationStarted() {
         return isSimulationStarted;
     }
 
+    /**
+     * The main method to launch the application.
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         launch(args);
     }

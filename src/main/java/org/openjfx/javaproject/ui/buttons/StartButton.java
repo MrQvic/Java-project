@@ -6,6 +6,10 @@ import org.openjfx.javaproject.RobotSimulator;
 import org.openjfx.javaproject.room.Autorobot;
 import org.openjfx.javaproject.room.Room;
 
+/**
+ * A button to start the simulation.
+ */
+
 public class StartButton extends Button {
 
     public StartButton(RobotSimulator simulator) {

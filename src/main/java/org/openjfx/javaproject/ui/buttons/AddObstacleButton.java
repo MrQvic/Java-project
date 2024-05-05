@@ -12,7 +12,18 @@ import org.openjfx.javaproject.room.Room;
 
 import java.util.Optional;
 
+/**
+ * A button used to add obstacles to the simulation room.
+ */
 public class AddObstacleButton extends Button {
+
+    /**
+     * Constructs an AddObstacleButton.
+     *
+     * @param simulator The RobotSimulator instance managing the simulation.
+     * @param room      The Room instance representing the simulation room.
+     * @param roomPane  The Pane where the simulation room is displayed.
+     */
     public AddObstacleButton(RobotSimulator simulator, Room room, Pane roomPane) {
         super("Add Obstacle");
         this.setOnAction(e -> {

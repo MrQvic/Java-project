@@ -13,8 +13,18 @@ import org.openjfx.javaproject.room.Room;
 
 import java.util.Optional;
 
+/**
+ * Represents a button to add a controlled robot to the room.
+ */
 public class AddControlledRobotButton extends Button {
 
+    /**
+     * Constructs an AddControlledRobotButton.
+     *
+     * @param simulator The robot simulator.
+     * @param room      The room where the robot will be added.
+     * @param roomPane  The pane representing the room.
+     */
     public AddControlledRobotButton(RobotSimulator simulator, Room room, Pane roomPane) {
         super("Add Controlled Robot");
         this.setOnAction(e -> {

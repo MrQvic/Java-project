@@ -20,14 +20,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import java.util.Optional;
 
+/**
+ * A button used to save the current configuration of the simulation to a JSON config file.
+ */
 public class ConfigButton extends Button {
     private Room room;
+
+    /**
+     * Constructs a ConfigButton.
+     *
+     * @param room The Room instance representing the simulation room.
+     */
     public ConfigButton(Room room) {
         super("Save To Config");
         this.room = room;
         this.setOnAction(e -> saveToConfig());
     }
 
+    /**
+     * Saves the simulation configuration to a JSON file.
+     *
+     * @param roomX           The width of the simulation room.
+     * @param roomY           The height of the simulation room.
+     * @param obstacles       The list of obstacles in the simulation.
+     * @param autoRobots      The list of autonomous robots in the simulation.
+     * @param controlledRobot The controlled robot in the simulation.
+     * @param filePath        The path to save the JSON file.
+     */
     public static void saveJSONToFile(int roomX, int roomY, List<Obstacle> obstacles, List<Autorobot> autoRobots, ControlledRobot controlledRobot, String filePath) {
         JSONObject json = new JSONObject();
         json.put("roomX", roomX);
@@ -44,6 +63,9 @@ public class ConfigButton extends Button {
         }
     }
 
+    /**
+     * Opens a dialog to enter the config file name and saves the configuration to the specified file.
+     */
     private void saveToConfig() {
         TextInputDialog dialog = new TextInputDialog("config.json");
         dialog.setTitle("Save to Config");
