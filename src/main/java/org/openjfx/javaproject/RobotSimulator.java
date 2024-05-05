@@ -25,6 +25,7 @@ import org.openjfx.javaproject.ui.buttons.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.json.JSONObject;
 
 
 public class RobotSimulator extends Application {
@@ -78,6 +79,7 @@ public class RobotSimulator extends Application {
         Button addObstacleButton = new AddObstacleButton(this, room, roomPane);
         Button startButton = new StartButton(this);
         PauseButton pauseButton = new PauseButton(timer);
+        ConfigButton configButton = new ConfigButton();
 
         // Set Button Sizes
         addControlledRobotButton.setPrefSize(135,12);
