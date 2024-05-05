@@ -146,14 +146,12 @@ public class RobotSimulator extends Application {
 
         // Key Input Listeners
         scene.setOnKeyPressed(event -> {
-            System.out.println("Key Pressed");
             if (room.isControlledRobotSet()) {
                 room.controlledRobot.keyPressed(event);
             }
         });
 
         scene.setOnKeyReleased(event -> {
-            System.out.println("Key Released");
             if (room.isControlledRobotSet()) {
                 room.controlledRobot.keyReleased(event);
             }
@@ -162,15 +160,6 @@ public class RobotSimulator extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        // Debugging: Check which node has the focus
-        scene.focusOwnerProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                System.out.println("Focus is on: " + newValue.getClass().getSimpleName());
-            } else {
-                System.out.println("No focus");
-            }
-        });
     }
 
 

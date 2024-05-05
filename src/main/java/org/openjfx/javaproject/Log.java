@@ -22,12 +22,13 @@ public class Log {
 
     public void recordLogs(int stepNumber, List<String> positions) {
         StringBuilder lineBuilder = new StringBuilder("{\"step\": " + stepNumber + ", ");
+        lineBuilder.append("\"robots\" : [");
         for (String position : positions) {
             lineBuilder.append(position).append(", ");
         }
 
         lineBuilder.setLength(lineBuilder.length() - 2);
-        lineBuilder.append("}\n");
+        lineBuilder.append("]}\n");
         recordedPositions.add(List.of(lineBuilder.toString()));
     }
 
@@ -60,11 +61,11 @@ public class Log {
         List<String> jsonPositions = new ArrayList<>();
         for (String position : positions) {
             String[] parts = position.split(" "); // Split by space
-            double x = Double.parseDouble(parts[0].replace(",", "."));
-            double y = Double.parseDouble(parts[1].replace(",", "."));
-            double angle = Double.parseDouble(parts[2].replace(",", "."));
+            String x = parts[0].replace(",", ".");
+            String y = parts[1].replace(",", ".");
+            String angle = parts[2].replace(",", ".");
 
-            String jsonString = String.format("{\"x\": %.2f, \"y\": %.2f, \"angle\": %.2f}", x, y, angle);
+            String jsonString = String.format("{\"x\": %s, \"y\": %s, \"angle\": %s}", x, y, angle);
 
             jsonPositions.add(jsonString);
         }

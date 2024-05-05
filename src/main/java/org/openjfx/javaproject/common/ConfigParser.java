@@ -104,7 +104,6 @@ public class ConfigParser {
                     }
                 }
             }
-            System.out.println("Returning ROOM :)");
             return room;
         } catch (IOException e) {
             e.printStackTrace();
