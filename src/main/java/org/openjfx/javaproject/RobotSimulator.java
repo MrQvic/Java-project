@@ -80,18 +80,17 @@ public class RobotSimulator extends Application {
 
                 for (Autorobot robot : room.getRobots()) {
                     robot.update(room);
-                    System.out.println("ROBOT\n");
                     positions.add(robot.getPositionAsString());
                 }
                 if(room.isControlledRobotSet()){
                     room.controlledRobot.update(room);
+                    positions.add(room.controlledRobot.getPositionAsString());
                 }
                 stepNumber++;
-                System.out.println(stepNumber);
 
                 log.recordLogs(stepNumber, log.formatToJson(positions));
                 if (stepNumber % 120 == 0) { // Output to file every 2 seconds
-                    //log.bufferOut(logFile);
+                    log.bufferOut(logFile);
                 }
             }
         };

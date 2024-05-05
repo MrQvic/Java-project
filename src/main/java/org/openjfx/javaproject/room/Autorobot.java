@@ -154,7 +154,6 @@ public class Autorobot {
 
     public String getPositionAsString() {
         String result = String.format("%.2f %.2f %.2f", position.getX(), position.getY(), getAngle());
-        System.out.println(result);
         return result;
 
         //return "x: " + position.getX() + ", y: " + position.getY();

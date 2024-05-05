@@ -144,7 +144,7 @@ public class ControlledRobot {
     }
 
     public String getPositionAsString() {
-        return String.format("x: %.2f, y: %.2f", position.getX(), position.getY());
+        return String.format("%.2f %.2f %.2f", position.getX(), position.getY(), getAngle());
     }
 
     public double getSize() {
