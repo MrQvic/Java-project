@@ -53,6 +53,16 @@ public class RobotSimulator extends Application {
         roomPane = room.create();
         roomPane.setStyle("-fx-background-color: #bdc3c7;");
 
+        for( Autorobot robot : room.getRobots()){
+            roomPane.getChildren().add(robot.getShape());
+        }
+        for( Obstacle obstacle : room.getObstacles()){
+            roomPane.getChildren().add(obstacle.getShape());
+        }
+
+        roomPane.getChildren().add(room.getControlledRobot().getShape());
+        roomPane.getChildren().add(room.getControlledRobot().getDirectionLine());
+
 
         // Initialise logging
         Log log = new Log();
@@ -198,7 +208,7 @@ public class RobotSimulator extends Application {
 
             } else {
                 String filePath = roomConfig;
-                // Parse json here
+                room[0] = ConfigParser.parse(filePath);
             }
         });
 
