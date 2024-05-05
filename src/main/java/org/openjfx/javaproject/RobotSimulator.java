@@ -60,8 +60,11 @@ public class RobotSimulator extends Application {
             roomPane.getChildren().add(obstacle.getShape());
         }
 
-        roomPane.getChildren().add(room.getControlledRobot().getShape());
-        roomPane.getChildren().add(room.getControlledRobot().getDirectionLine());
+        if(room.getControlledRobot() != null){
+            roomPane.getChildren().add(room.getControlledRobot().getShape());
+            roomPane.getChildren().add(room.getControlledRobot().getDirectionLine());
+        }
+
 
 
         // Initialise logging
