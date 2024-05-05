@@ -40,6 +40,14 @@ public class AddControlledRobotButton extends Button {
                         room.addControlledRobot(newRobot);
                         roomPane.getChildren().add(room.controlledRobot.getShape());
                         roomPane.getChildren().add(room.controlledRobot.getDirectionLine());
+
+                        // Add event handlers for the robot's shape and direction line
+                        room.controlledRobot.getShape().setOnMouseClicked(ev -> {
+                            roomPane.getChildren().remove(room.controlledRobot.getShape());
+                            roomPane.getChildren().remove(room.controlledRobot.getDirectionLine());
+                            room.controlledRobot = null;
+                        });
+
                         System.out.println("Requesting focus for controlled robot shape");
                         roomPane.requestFocus(); // Request focus on the roomPane
                     }

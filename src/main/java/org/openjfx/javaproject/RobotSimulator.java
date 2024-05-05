@@ -55,14 +55,27 @@ public class RobotSimulator extends Application {
 
         for( Autorobot robot : room.getRobots()){
             roomPane.getChildren().add(robot.getShape());
+            robot.getShape().setOnMouseClicked(e -> {
+                room.getRobots().remove(robot);
+                roomPane.getChildren().remove(robot.getShape());
+            });
         }
         for( Obstacle obstacle : room.getObstacles()){
             roomPane.getChildren().add(obstacle.getShape());
+            obstacle.getShape().setOnMouseClicked(e -> {
+                room.getObstacles().remove(obstacle);
+                roomPane.getChildren().remove(obstacle.getShape());
+            });
         }
 
         if(room.getControlledRobot() != null){
             roomPane.getChildren().add(room.getControlledRobot().getShape());
             roomPane.getChildren().add(room.getControlledRobot().getDirectionLine());
+            room.getControlledRobot().getShape().setOnMouseClicked(e -> {
+                roomPane.getChildren().remove(room.getControlledRobot().getShape());
+                roomPane.getChildren().remove(room.getControlledRobot().getDirectionLine());
+                room.controlledRobot = null;
+            });
         }
 
 
@@ -100,7 +113,7 @@ public class RobotSimulator extends Application {
         AddRobotButton addRobotButton = new AddRobotButton(this, room, roomPane);
         Button addObstacleButton = new AddObstacleButton(this, room, roomPane);
         Button startButton = new StartButton(this);
-        PauseButton pauseButton = new PauseButton(timer);
+        PauseButton pauseButton = new PauseButton(this);
         ConfigButton configButton = new ConfigButton(room);
         ResetButton resetButton = new ResetButton(this, room, roomPane);
 

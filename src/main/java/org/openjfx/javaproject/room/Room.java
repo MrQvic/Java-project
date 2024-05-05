@@ -61,7 +61,7 @@ public class Room {
     }
 
     public List<Autorobot> getRobots() {
-        return Collections.unmodifiableList(this.robots);
+        return /*Collections.unmodifiableList(this.*/robots/*)*/;
     }
 
     public void clear() {

@@ -37,9 +37,16 @@ public class AddRobotButton extends Button {
                         alert.showAndWait();
                     } else {
                         roomPane.getChildren().add(newRobot.getShape());
+
+                        // Add event handler for the robot's shape
+                        newRobot.getShape().setOnMouseClicked(event -> {
+                            room.getRobots().remove(newRobot);
+                            roomPane.getChildren().remove(newRobot.getShape());
+                        });
                     }
                 });
             }
         });
     }
 }
+

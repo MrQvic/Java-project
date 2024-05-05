@@ -2,13 +2,13 @@ package org.openjfx.javaproject.ui.buttons;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Button;
+import org.openjfx.javaproject.RobotSimulator;
 
 public class PauseButton extends Button {
-    private final AnimationTimer timer;
-
-    public PauseButton(AnimationTimer timer) {
+    public PauseButton(RobotSimulator simulation) {
         super("Pause Simulation");
-        this.timer = timer;
-        this.setOnAction(e -> this.timer.stop());
+        this.setOnAction(e -> {
+            simulation.resetTimer();
+        });
     }
 }
