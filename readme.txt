@@ -1,7 +1,7 @@
 # Simple 2D Robot Simulator Project (IJA 2023/24)
 
 ## Project Overview
-This project is a simple 2D simulation of mobile robots within a bounded rectangular environment with obstacles.
+This project is a simple 2D simulation of robots within a bounded rectangular environment with obstacles.
 It features autonomous and remotely controlled robots that navigate around static square obstacles, avoiding collisions and responding to operator inputs.
 The initial placement of obstacles and robots can be set interactively in the GUI, saved to a file and loaded from a file.
 They can be removed by clicking on them with mouse.
