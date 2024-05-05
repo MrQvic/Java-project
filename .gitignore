@@ -40,7 +40,6 @@ build/
 #####
 mvnw
 mvnw.cmd
-mvnw.cmd
 /.idea
 log.txt
 config.json
