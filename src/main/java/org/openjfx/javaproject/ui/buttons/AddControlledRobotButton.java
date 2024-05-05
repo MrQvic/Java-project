@@ -22,7 +22,7 @@ public class AddControlledRobotButton extends Button {
                 // Create a dialog for user input
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Add Controlled Robot");
-                dialog.setHeaderText("Enter the controlled robot's position x,y:");
+                dialog.setHeaderText("Enter the controlled robot's position \"x,y\":");
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(position -> {
                     String[] coordinates = position.split(",");
