@@ -1,0 +1,54 @@
+{
+  "controlledRobot": [
+    {
+      "x": 450,
+      "y": 50
+    }
+  ],
+  "roomY": 600,
+  "autoRobots": [
+    {
+      "x": 100,
+      "y": 100,
+      "angle": 0
+    },
+    {
+      "x": 500,
+      "y": 500,
+      "angle": 0
+    }
+  ],
+  "roomX": 600,
+  "obstacles": [
+    {
+      "size": 40,
+      "x": 250,
+      "y": 250,
+      "type": "rectangle"
+    },
+    {
+      "size": 40,
+      "x": 350,
+      "y": 250,
+      "type": "rectangle"
+    },
+    {
+      "size": 50,
+      "x": 545,
+      "y": 55,
+      "type": "rectangle"
+    },
+    {
+      "size": 60,
+      "x": 435,
+      "y": 435,
+      "type": "circle"
+    },
+    {
+      "size": 60,
+      "x": 62,
+      "y": 538,
+      "type": "circle"
+    }
+  ]
+}

@@ -130,7 +130,12 @@ public class ConfigParser {
             JSONObject obj = new JSONObject();
             obj.put("x", obstacle.getPosition().getX());
             obj.put("y", obstacle.getPosition().getY());
-            obj.put("size", obstacle.getSize()/2);
+            if(obstacle instanceof CircleObstacle circleObstacle){
+                obj.put("size", obstacle.getSize());
+            }
+            else{
+                obj.put("size", obstacle.getSize()/2);
+            }
             obj.put("type", obstacle.getType());
             jsonArray.put(obj);
         }

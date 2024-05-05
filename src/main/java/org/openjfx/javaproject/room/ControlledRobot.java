@@ -1,4 +1,5 @@
 package org.openjfx.javaproject.room;
+import javafx.scene.paint.Color;
 import org.openjfx.javaproject.common.Obstacle;
 import org.openjfx.javaproject.room.CircleObstacle;
 
@@ -32,6 +33,7 @@ public class ControlledRobot {
         this.position = position;
         this.angle = angle;
         this.shape = new Circle(RADIUS);
+        shape.setFill(Color.PURPLE);
         this.directionLine = new Line();
         this.directionLine.setStartX(position.getX());
         this.directionLine.setStartY(position.getY());

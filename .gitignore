@@ -42,5 +42,5 @@ mvnw
 mvnw.cmd
 /.idea
 log.txt
-config.json
+data/config.json
 config2.json
