@@ -28,7 +28,7 @@ public abstract class Obstacle {
         if (type.equals("circle")) {
             return new CircleObstacle(position, size);
         } else if (type.equals("rectangle")) {
-            return new RectangleObstacle(position);
+            return new RectangleObstacle(position, size);
         } else {
             return null;
         }

@@ -7,9 +7,11 @@ import org.openjfx.javaproject.common.Obstacle;
 public class RectangleObstacle extends Obstacle {
     private final Rectangle rectangle;
 
-    public RectangleObstacle(Position position) {
+    public RectangleObstacle(Position position, double size) {
         super(position);
-        rectangle = new Rectangle(position.getX(), position.getY(), 60, 60);
+        size *= 2;
+        // Adjust the position so the rectangle is created from the middle
+        rectangle = new Rectangle(position.getX() - size / 2, position.getY() - size / 2, size, size);
         rectangle.setFill(Color.GRAY);
     }
 
@@ -20,6 +22,6 @@ public class RectangleObstacle extends Obstacle {
 
     @Override
     public double getSize() { //TODO: return correct value, not
-        return rectangle.getWidth() * rectangle.getHeight();
+        return rectangle.getHeight();
     }
 }

@@ -169,10 +169,15 @@ public class ControlledRobot {
             double dy = nextY - circleObstacle.getPosition().getY();
             double distance = Math.sqrt(dx * dx + dy * dy);
             return distance < (RADIUS + circleObstacle.getSize());
-        } else {
-            // Handle other types of obstacles here, if needed
-            return false;
+        } else if (obstacle instanceof RectangleObstacle squareObstacle) {
+            double halfSize = squareObstacle.getSize() / 2;
+            double left = squareObstacle.getPosition().getX() - halfSize - RADIUS;
+            double right = squareObstacle.getPosition().getX() + halfSize + RADIUS;
+            double top = squareObstacle.getPosition().getY() - halfSize - RADIUS;
+            double bottom = squareObstacle.getPosition().getY() + halfSize + RADIUS;
+            return nextX >= left && nextX <= right && nextY >= top && nextY <= bottom;
         }
+        return false;
     }
 
 

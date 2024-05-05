@@ -18,18 +18,31 @@ public class AddObstacleButton extends Button {
         this.setOnAction(e -> {
             if (!simulator.isSimulationStarted()){
 
-                // Create a dialog for user input
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Add Obstacle");
-                dialog.setHeaderText("Enter the obstacle's position (x,y):");
+                // Create a series of dialog boxes for user input
+                TextInputDialog positionDialog = new TextInputDialog();
+                positionDialog.setTitle("Add Obstacle");
+                positionDialog.setHeaderText("Enter the obstacle's position (x,y):");
 
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(position -> {
-                    String[] coordinates = position.split(",");
+                TextInputDialog typeDialog = new TextInputDialog("rectangle");
+                typeDialog.setTitle("Add Obstacle");
+                typeDialog.setHeaderText("Enter the obstacle's type (rectangle or circle):");
+
+                TextInputDialog sizeDialog = new TextInputDialog("30");
+                sizeDialog.setTitle("Add Obstacle");
+                sizeDialog.setHeaderText("Enter the obstacle's size:");
+
+                Optional<String> positionResult = positionDialog.showAndWait();
+                Optional<String> typeResult = typeDialog.showAndWait();
+                Optional<String> sizeResult = sizeDialog.showAndWait();
+
+                if (positionResult.isPresent() && typeResult.isPresent() && sizeResult.isPresent()) {
+                    String[] coordinates = positionResult.get().split(",");
                     int x = Integer.parseInt(coordinates[0].trim());
                     int y = Integer.parseInt(coordinates[1].trim());
+                    String type = typeResult.get();
+                    int size = Integer.parseInt(sizeResult.get());
 
-                    Obstacle obstacle = Obstacle.create(room, new Position(x,y), 30, "circle");
+                    Obstacle obstacle = Obstacle.create(room, new Position(x,y), size, type);
                     if (obstacle == null) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialog");
@@ -42,9 +55,9 @@ public class AddObstacleButton extends Button {
                         // Add the shape of the obstacle to the pane
                         roomPane.getChildren().add(obstacle.getShape());
                     }
-                });
-
+                }
             }
         });
     }
 }
+

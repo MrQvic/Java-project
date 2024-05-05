@@ -90,8 +90,18 @@ public class Room {
         }
         // loop through obstacles
         for (Obstacle obstacle : obstacles) {
-            if (position.isNear(obstacle.getPosition(), radius + obstacle.getSize())) {
-                return false;
+            if (obstacle instanceof RectangleObstacle squareObstacle) {
+                double left = squareObstacle.getPosition().getX() - squareObstacle.getSize() / 2 - radius ;
+                double right = squareObstacle.getPosition().getX() + squareObstacle.getSize() / 2 + radius ;
+                double top = squareObstacle.getPosition().getY() - squareObstacle.getSize() / 2 - radius ;
+                double bottom = squareObstacle.getPosition().getY() + squareObstacle.getSize() / 2 + radius ;
+                if (position.getX() > left && position.getX() < right && position.getY() > top && position.getY() < bottom) {
+                    return false;
+                }
+            } else {
+                if (position.isNear(obstacle.getPosition(), radius + obstacle.getSize())) {
+                    return false;
+                }
             }
         }
         double x = position.getX();
