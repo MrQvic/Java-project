@@ -22,6 +22,12 @@ public class ControlledRobot {
     private boolean sPressed = false;
     private boolean dPressed = false;
 
+    /**
+     * Constructs a ControlledRobot with the specified position and angle.
+     *
+     * @param position The initial position of the robot.
+     * @param angle The initial angle of the robot.
+     */
     public ControlledRobot(Position position, double angle) {
         this.position = position;
         this.angle = angle;
@@ -33,6 +39,14 @@ public class ControlledRobot {
         updatePosition();
     }
 
+    /**
+     * Creates a ControlledRobot in the specified room with the given position and angle.
+     *
+     * @param room The room in which the robot is created.
+     * @param position The initial position of the robot.
+     * @param angle The initial angle (in degrees) of the robot.
+     * @return The created ControlledRobot instance, or null if it cannot be created due to obstacle collision.
+     */
     public static ControlledRobot create(Room room, Position position, double angle) {
         if (!room.canCreate(position, RADIUS)) {    //there is obstacle
             return null;
@@ -42,6 +56,11 @@ public class ControlledRobot {
         return robot;
     }
 
+    /**
+     * Updates the state of the robot based on user input and collision detection.
+     *
+     * @param room The room in which the robot exists.
+     */
     public void update(Room room) {
         // Rotate left and right
         if (aPressed) {
@@ -87,16 +106,27 @@ public class ControlledRobot {
         updatePosition();
     }
 
+
     private void updatePosition() {
         // Update robot's position
         shape.setCenterX(position.getX());
         shape.setCenterY(position.getY());
     }
 
+    /**
+     * Retrieves the graphical representation of the robot.
+     *
+     * @return The Circle representing the robot's shape.
+     */
     public Circle getShape() {
         return shape;
     }
 
+    /**
+     * Handles key press events.
+     *
+     * @param event The KeyEvent representing the key press event.
+     */
     public void keyPressed(KeyEvent event) {
         KeyCode code = event.getCode();
         if (code == KeyCode.W) {
@@ -110,6 +140,11 @@ public class ControlledRobot {
         }
     }
 
+    /**
+     * Handles key release events.
+     *
+     * @param event The KeyEvent representing the key release event.
+     */
     public void keyReleased(KeyEvent event) {
         KeyCode code = event.getCode();
         if (code == KeyCode.W) {
@@ -135,26 +170,59 @@ public class ControlledRobot {
         directionLine.setEndY(endY);
     }
 
+    /**
+     * Retrieves the line representing the direction the robot is facing.
+     *
+     * @return The Line representing the direction.
+     */
     public Line getDirectionLine() {
         return directionLine;
     }
 
+    /**
+     * Retrieves the position of the robot.
+     *
+     * @return The Position object representing the robot's position.
+     */
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * Retrieves a string representation of the robot's position and angle.
+     *
+     * @return A string representing the robot's position and angle in the format "x y angle".
+     */
     public String getPositionAsString() {
         return String.format("%.2f %.2f %.2f", position.getX(), position.getY(), getAngle());
     }
 
+    /**
+     * Retrieves the size of the robot.
+     *
+     * @return The size of the robot, which is its radius.
+     */
     public double getSize() {
         return RADIUS;
     }
 
+    /**
+     * Retrieves the angle the robot is facing.
+     *
+     * @return The angle the robot is facing, in degrees.
+     */
     public double getAngle() {
         return angle;
     }
 
+    /**
+     * Checks if the ControlledRobot collides with an Autorobot at the specified next position.
+     *
+     * @param robot The Autorobot to check collision against.
+     * @param nextX The x-coordinate of the next position of the ControlledRobot.
+     * @param nextY The y-coordinate of the next position of the ControlledRobot.
+     * @return True if the ControlledRobot collides with the specified Autorobot, false otherwise.
+     */
     private boolean checkCollision(Autorobot robot, double nextX, double nextY) {
         double dx = nextX - robot.getPosition().getX();
         double dy = nextY - robot.getPosition().getY();
@@ -163,6 +231,14 @@ public class ControlledRobot {
         return distance < (RADIUS + robot.getSize());
     }
 
+    /**
+     * Checks if the ControlledRobot collides with an Obstacle at the specified next position.
+     *
+     * @param obstacle The Obstacle to check collision against.
+     * @param nextX The x-coordinate of the next position of the ControlledRobot.
+     * @param nextY The y-coordinate of the next position of the ControlledRobot.
+     * @return True if the ControlledRobot collides with the specified Obstacle, false otherwise.
+     */
     private boolean checkCollision(Obstacle obstacle, double nextX, double nextY) {
         if (obstacle instanceof CircleObstacle circleObstacle) {
             double dx = nextX - circleObstacle.getPosition().getX();
