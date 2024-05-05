@@ -103,7 +103,7 @@ public class RobotSimulator extends Application {
         Button startButton = new StartButton(this);
         PauseButton pauseButton = new PauseButton(timer);
         ConfigButton configButton = new ConfigButton();
-        ResetButton resetButton = new ResetButton(this, room);
+        ResetButton resetButton = new ResetButton(this, room, roomPane);
 
         // Set Button Sizes
         addControlledRobotButton.setPrefSize(135,12);
@@ -112,11 +112,15 @@ public class RobotSimulator extends Application {
         startButton.setPrefSize(135,12);
         pauseButton.setPrefSize(135,12);
         configButton.setPrefSize(135,12);
+        resetButton.setPrefSize(135,12);
+
+        Region spacer = new Region();
+        spacer.setMinHeight(10); // Set the height of the space you want
 
         // Create a new pane for top buttons
         VBox topButtonPane = new VBox(10);
         topButtonPane.setAlignment(Pos.TOP_CENTER);
-        topButtonPane.getChildren().addAll(addObstacleButton, addControlledRobotButton, addRobotButton, configButton, resetButton);
+        topButtonPane.getChildren().addAll(addObstacleButton, addControlledRobotButton, addRobotButton, resetButton, spacer, configButton);
         topButtonPane.setPadding(new Insets(0, 10, 10, 10));
 
         // Create a new pane for bottom buttons
@@ -218,6 +222,11 @@ public class RobotSimulator extends Application {
         });
 
         return room[0];
+    }
+
+    public void resetTimer(){
+        timer.stop();
+        isSimulationStarted = false;
     }
 
     public void startSimulation() {

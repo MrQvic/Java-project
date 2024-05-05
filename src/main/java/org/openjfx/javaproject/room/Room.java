@@ -110,9 +110,16 @@ public class Room {
         return !(x - radius < 0) && !(x + radius > width) && !(y - radius < 0) && !(y + radius > height);
     }
 
-
     public ControlledRobot getControlledRobot(){
         return this.controlledRobot;
     }
+
+    public void clearAll() {
+        this.robots.clear();
+        this.obstacles.clear();
+        this.controlledRobot = null;
+    }
+
+
 
 }
