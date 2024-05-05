@@ -3,6 +3,9 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.openjfx.javaproject.room.Autorobot;
+import org.openjfx.javaproject.common.Obstacle;
+
+import org.openjfx.javaproject.common.ConfigParser;
 
 import javafx.geometry.Pos;
 import javafx.animation.AnimationTimer;
@@ -38,10 +41,23 @@ public class RobotSimulator extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        //ConfigParser.parse("C:\\Users\\Admin\\Documents\\GitHub\\Java\\Java-project\\src\\main\\java\\org\\openjfx\\javaproject\\common\\config.json");
         // Create a dialog for input
-        Room room = getRoom();
+        //Room room = getRoom();
+        Room room = ConfigParser.parse("C:\\Users\\Admin\\Documents\\GitHub\\Java\\Java-project\\src\\main\\java\\org\\openjfx\\javaproject\\common\\config.json");
+
         roomPane = room.create();
         roomPane.setStyle("-fx-background-color: #bdc3c7;");
+
+        for (Autorobot robot : room.getRobots()) {
+            roomPane.getChildren().add(robot.getShape());
+        }
+        for (Obstacle obstacle : room.getObstacles()) {
+            roomPane.getChildren().add(obstacle.getShape());
+        }
+
+        roomPane.getChildren().add(room.getControlledRobot().getShape());
+        roomPane.getChildren().add(room.getControlledRobot().getDirectionLine());
 
 
         // Initialise logging
