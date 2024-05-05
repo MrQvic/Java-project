@@ -24,4 +24,9 @@ public class RectangleObstacle extends Obstacle {
     public double getSize() { //TODO: return correct value, not
         return rectangle.getHeight();
     }
+
+    @Override
+    public String getType() {
+        return "rectangle";
+    }
 }

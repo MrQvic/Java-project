@@ -22,4 +22,9 @@ public class CircleObstacle extends Obstacle {
     public double getSize() {
         return circle.getRadius();
     }
+
+    @Override
+    public String getType() {
+        return "circle";
+    }
 }

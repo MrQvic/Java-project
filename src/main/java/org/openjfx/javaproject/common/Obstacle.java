@@ -20,6 +20,7 @@ public abstract class Obstacle {
 
     public abstract Shape getShape();
     public abstract double getSize();
+    public abstract String getType();
 
     public static Obstacle create(Room room, Position position, double size, String type) {
         if (!room.canCreate(position, size)) {    //there is obstacle

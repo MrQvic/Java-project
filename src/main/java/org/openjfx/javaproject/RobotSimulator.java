@@ -102,7 +102,7 @@ public class RobotSimulator extends Application {
         Button addObstacleButton = new AddObstacleButton(this, room, roomPane);
         Button startButton = new StartButton(this);
         PauseButton pauseButton = new PauseButton(timer);
-        ConfigButton configButton = new ConfigButton();
+        ConfigButton configButton = new ConfigButton(room);
         ResetButton resetButton = new ResetButton(this, room);
 
         // Set Button Sizes

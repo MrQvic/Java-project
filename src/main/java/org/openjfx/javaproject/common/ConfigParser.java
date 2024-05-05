@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileReader;
+import java.util.List;
 import java.io.IOException;
 
 public class ConfigParser {
@@ -110,4 +111,39 @@ public class ConfigParser {
         }
         return null;
     }
+
+    public static JSONArray obstaclesToJson(List<Obstacle> obstacles) {
+        JSONArray jsonArray = new JSONArray();
+        for (Obstacle obstacle : obstacles) {
+            JSONObject obj = new JSONObject();
+            obj.put("x", obstacle.getPosition().getX());
+            obj.put("y", obstacle.getPosition().getY());
+            obj.put("size", obstacle.getSize()/2);
+            obj.put("type", obstacle.getType());
+            jsonArray.put(obj);
+        }
+        return jsonArray;
+    }
+
+    public static JSONArray autoRobotsToJson(List<Autorobot> autoRobots) {
+        JSONArray jsonArray = new JSONArray();
+        for (Autorobot autoRobot : autoRobots) {
+            JSONObject obj = new JSONObject();
+            obj.put("x", autoRobot.getPosition().getX());
+            obj.put("y", autoRobot.getPosition().getY());
+            obj.put("angle", autoRobot.getAngle());
+            jsonArray.put(obj);
+        }
+        return jsonArray;
+    }
+
+    public static JSONArray robotsToJson(ControlledRobot controlledRobot) {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject obj = new JSONObject();
+        obj.put("x", controlledRobot.getPosition().getX());
+        obj.put("y", controlledRobot.getPosition().getY());
+        jsonArray.put(obj);
+        return jsonArray;
+    }
+
 }
