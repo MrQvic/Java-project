@@ -13,6 +13,13 @@ import java.util.List;
 import java.io.IOException;
 
 public class ConfigParser {
+
+    /**
+     * Parse config file and create room with all objects from the config file.
+     *
+     * @param filename Name and path of the configuration file.
+     * @return Room object with size, robots, obstacles and controlled robot specified in the config file.
+     */
     public static Room parse(String filename) {
         try (FileReader fileReader = new FileReader(filename)) {
             // Parse JSON
@@ -111,6 +118,12 @@ public class ConfigParser {
         return null;
     }
 
+    /**
+     * Convert obstacles into JSON
+     *
+     * @param obstacles List of obstacles.
+     * @return Information about obstacles in JSON format.
+     */
     public static JSONArray obstaclesToJson(List<Obstacle> obstacles) {
         JSONArray jsonArray = new JSONArray();
         for (Obstacle obstacle : obstacles) {
@@ -124,6 +137,12 @@ public class ConfigParser {
         return jsonArray;
     }
 
+    /**
+     * Convert self controlled robots into JSON
+     *
+     * @param autoRobots List of obstacles.
+     * @return Information about self controlled robots in JSON format.
+     */
     public static JSONArray autoRobotsToJson(List<Autorobot> autoRobots) {
         JSONArray jsonArray = new JSONArray();
         for (Autorobot autoRobot : autoRobots) {
@@ -136,6 +155,12 @@ public class ConfigParser {
         return jsonArray;
     }
 
+    /**
+     * Convert controlled robot information into JSON
+     *
+     * @param controlledRobot List of obstacles.
+     * @return Information about the controlled robot in JSON format.
+     */
     public static JSONArray robotsToJson(ControlledRobot controlledRobot) {
         JSONArray jsonArray = new JSONArray();
         JSONObject obj = new JSONObject();

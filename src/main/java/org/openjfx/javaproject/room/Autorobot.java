@@ -18,6 +18,12 @@ public class Autorobot {
     private double angle;
     private final Circle shape;
 
+    /**
+     * Constructs a new auto robot with the specified initial position and facing angle.
+     *
+     * @param position The initial position of the auto robot.
+     * @param angle The angle (in radians) the auto robot is facing.
+     */
     private Autorobot(Position position, double angle) {
         this.position = position;
         this.angle = angle;
@@ -25,6 +31,14 @@ public class Autorobot {
         updatePosition();
     }
 
+    /**
+     * Creates a new Self controlled robot and adds it to the specified room if the position is free of obstacles.
+     *
+     * @param room The room in which the auto robot is created.
+     * @param position The initial position of the auto robot.
+     * @param angle The angle (in radians) the auto robot is facing.
+     * @return The newly created auto robot, or null if the position is not available.
+     */
     public static Autorobot create(Room room, Position position, double angle) {
         if (!room.canCreate(position, RADIUS)) {    //there is obstacle
             return null;
@@ -34,6 +48,11 @@ public class Autorobot {
         return robot;
     }
 
+    /**
+     * Updates the position and angle of the robot based on its current position, angle, and room conditions.
+     *
+     * @param room The room in which the robot moves.
+     */
     public void update(Room room) {
         boolean hasCollision = false;
 
@@ -109,16 +128,33 @@ public class Autorobot {
         updatePosition();
     }
 
+    /**
+     * Updates the position of the robots shape.
+     * This method is called after every movement update.
+     */
     private void updatePosition() {
         // Update robot's position
         shape.setCenterX(position.getX());
         shape.setCenterY(position.getY());
     }
 
+    /**
+     * Retrieves the graphical representation of the robot.
+     *
+     * @return The Circle representing the robots shape.
+     */
     public Circle getShape() {
         return shape;
     }
 
+    /**
+     * Checks if the robots left field of view is intersecting with any wall in the room.
+     *
+     * @param nextX The next x-coordinate of the robot.
+     * @param nextY The next y-coordinate of the robot.
+     * @param room The room in which the robot exists.
+     * @return True if the left field of view intersects with a wall, false otherwise.
+     */
     private boolean isInViewOfEdgeLeft(double nextX, double nextY, Room room) {
         // Calculate the endpoints of the visibility lines
         double leftEndX = nextX + VIEW_DISTANCE * Math.cos(angle - VIEW_ANGLE);
@@ -127,6 +163,14 @@ public class Autorobot {
         return intersectsWall(nextX, nextY, leftEndX, leftEndY, room);
     }
 
+    /**
+     * Checks if the robots right field of view is intersecting with any wall in the room.
+     *
+     * @param nextX The next x-coordinate of the robot.
+     * @param nextY The next y-coordinate of the robot.
+     * @param room The room in which the robot exists.
+     * @return True if the right field of view intersects with a wall, false otherwise.
+     */
     private boolean isInViewOfEdgeRight(double nextX, double nextY, Room room) {
         // Calculate the endpoints of the visibility lines
         double rightEndX = nextX + VIEW_DISTANCE * Math.cos(angle + VIEW_ANGLE);
@@ -135,6 +179,14 @@ public class Autorobot {
         return intersectsWall(nextX, nextY, rightEndX, rightEndY, room);
     }
 
+    /**
+     * Checks if the robots center field of view is intersecting with any wall in the room.
+     *
+     * @param nextX The next x-coordinate of the robot.
+     * @param nextY The next y-coordinate of the robot.
+     * @param room The room in which the robot exists.
+     * @return True if the center field of view intersects with a wall, false otherwise.
+     */
     private boolean isInViewOfEdgeCenter(double nextX, double nextY, Room room) {
         // Calculate the endpoint of the visibility line
         double centerEndX = nextX + VIEW_DISTANCE * Math.cos(angle);
@@ -143,15 +195,36 @@ public class Autorobot {
         return intersectsWall(nextX, nextY, centerEndX, centerEndY, room);
     }
 
+    /**
+     * Checks if the line defined by the given start and end points intersects with any wall in the room.
+     *
+     * @param startX The x-coordinate of the start point of the line.
+     * @param startY The y-coordinate of the start point of the line.
+     * @param endX The x-coordinate of the end point of the line.
+     * @param endY The y-coordinate of the end point of the line.
+     * @param room The room in which the line is located.
+     * @return True if the line intersects with any wall in the room, false otherwise.
+     */
     private boolean intersectsWall(double startX, double startY, double endX, double endY, Room room) {
         return startX < 0 || startX > room.getWidth() || startY < 0 || startY > room.getHeight() ||
                 endX < 0 || endX > room.getWidth() || endY < 0 || endY > room.getHeight();
     }
 
+    /**
+     * Retrieves the position of the robot.
+     *
+     * @return The current position of the robot.
+     */
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * Retrieves a string representation of the robots position and angle.
+     *
+     * @return A string representing the robots position and angle in the format "x y angle",
+     *         which is further used for creating logs.
+     */
     public String getPositionAsString() {
         String result = String.format("%.2f %.2f %.2f", position.getX(), position.getY(), getAngle());
         return result;
@@ -159,12 +232,32 @@ public class Autorobot {
         //return "x: " + position.getX() + ", y: " + position.getY();
     }
 
+    /**
+     * Retrieves the size of the robot.
+     *
+     * @return The size of the robot, which is the radius of its shape.
+     */
     public double getSize() {
         return RADIUS;
     }
-    public double getAngle(){ return angle; }
 
-    // Override collision detection methods
+    /**
+     * Retrieves the angle (in radians) the robot is facing.
+     *
+     * @return The angle the robot is facing, in radians.
+     */
+    public double getAngle() {
+        return angle;
+    }
+
+    /**
+     * Checks if the robot collides with a controlled robot at the next position.
+     *
+     * @param robot The controlled robot to check collision against.
+     * @param nextX The x-coordinate of the next position of the robot.
+     * @param nextY The y-coordinate of the next position of the robot.
+     * @return True if the robot collides with the controlled robot, false otherwise.
+     */
     private boolean checkCollision(ControlledRobot robot, double nextX, double nextY) {
         double dx = nextX - robot.getPosition().getX();
         double dy = nextY - robot.getPosition().getY();
@@ -173,6 +266,14 @@ public class Autorobot {
         return distance < (RADIUS + robot.getSize() + SAFE_ZONE);
     }
 
+    /**
+     * Checks if the robot collides with another robot at the specified next position.
+     *
+     * @param robot The robot to check collision against.
+     * @param nextX The x-coordinate of the next position of the current robot.
+     * @param nextY The y-coordinate of the next position of the current robot.
+     * @return True if the current robot collides with the specified robot, false otherwise.
+     */
     private boolean checkCollision(Autorobot robot, double nextX, double nextY) {
         double dx = nextX - robot.getPosition().getX();
         double dy = nextY - robot.getPosition().getY();
@@ -181,6 +282,14 @@ public class Autorobot {
         return distance < (RADIUS + robot.getSize() + SAFE_ZONE);
     }
 
+    /**
+     * Checks if the robot collides with an obstacle at the next position.
+     *
+     * @param obstacle The obstacle to check collision against.
+     * @param nextX The x-coordinate of the next position of the robot.
+     * @param nextY The y-coordinate of the next position of the robot.
+     * @return True if the robot collides with the specified obstacle, false otherwise.
+     */
     private boolean checkCollisionObstacle(Obstacle obstacle, double nextX, double nextY) {
         if (obstacle instanceof CircleObstacle circleObstacle) {
             double dx = nextX - circleObstacle.getPosition().getX();
@@ -198,6 +307,14 @@ public class Autorobot {
         return false;
     }
 
+    /**
+     * Checks if the robot collides with the edges of the room at the next position.
+     *
+     * @param nextX The x-coordinate of the next position of the robot.
+     * @param nextY The y-coordinate of the next position of the robot.
+     * @param room The room in which the robot exists.
+     * @return True if the robot collides with any edge of the room, false otherwise.
+     */
     private boolean checkCollisionWithEdge(double nextX, double nextY, Room room) {
         if (nextX - RADIUS < 0 || nextX + RADIUS > room.getWidth()) {;
             return true;
@@ -205,6 +322,14 @@ public class Autorobot {
         return nextY - RADIUS < 0 || nextY + RADIUS > room.getHeight();
     }
 
+    /**
+     * Checks if the robot collides with any obstacles in the room at the specified next position.
+     *
+     * @param room The room in which the robot exists.
+     * @param nextX The x-coordinate of the next position of the robot.
+     * @param nextY The y-coordinate of the next position of the robot.
+     * @return True if the robot collides with any obstacle in the room, false otherwise.
+     */
     private boolean checkCollisionsWithObstacles(Room room, double nextX, double nextY) {
         for (Obstacle obstacle : room.getObstacles()) {
             if (checkCollisionObstacle(obstacle, nextX, nextY)) {
