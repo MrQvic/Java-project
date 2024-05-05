@@ -24,8 +24,15 @@ import org.openjfx.javaproject.ui.buttons.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.stage.FileChooser;
+import java.io.File;
 import java.util.Optional;
-import org.json.JSONObject;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.stage.FileChooser;
 
 
 public class RobotSimulator extends Application {
@@ -37,9 +44,9 @@ public class RobotSimulator extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Room room = getRoom();
 
         // Create a dialog for input
-        Room room = getRoom();
         roomPane = room.create();
         roomPane.setStyle("-fx-background-color: #bdc3c7;");
 
@@ -145,18 +152,54 @@ public class RobotSimulator extends Application {
         });
     }
 
-    private static Room getRoom() {
-        TextInputDialog dialog = new TextInputDialog("500");
-        dialog.setTitle("Room Size Input");
-        dialog.setHeaderText("Enter Room Size:");
-        dialog.setContentText("Please enter room size:");
+
+    private Room getRoom() {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Room Configuration");
+        dialog.setHeaderText("Choose your configuration method:");
+
+        // Buttons
+        ButtonType loadConfigButtonType = new ButtonType("Load Config");
+        ButtonType inputSizeButtonType = new ButtonType("Input Size");
+        dialog.getDialogPane().getButtonTypes().addAll(loadConfigButtonType, inputSizeButtonType);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == loadConfigButtonType) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+                File selectedFile = fileChooser.showOpenDialog(null);
+                if (selectedFile != null) {
+                    return selectedFile.getPath();
+                }
+            } else if (buttonType == inputSizeButtonType) {
+                TextInputDialog sizeDialog = new TextInputDialog("500");
+                sizeDialog.setTitle("Room Size Input");
+                sizeDialog.setHeaderText("Enter Room Size:");
+                sizeDialog.setContentText("Please enter room size:");
+                Optional<String> result = sizeDialog.showAndWait();
+                if (result.isPresent()){
+                    return result.get();
+                }
+            }
+            return null;
+        });
+
         Optional<String> result = dialog.showAndWait();
-        int roomSize = 500; // default value
-        if (result.isPresent()){
-            roomSize = Integer.parseInt(result.get());
-        }
-        // Create a room with user input size
-        return new Room(roomSize, roomSize);
+
+        final Room[] room = {null};
+
+        result.ifPresent(roomConfig -> {
+            if (roomConfig.matches("\\d+")) {
+                int roomSize = Integer.parseInt(roomConfig);
+                room[0] = new Room(roomSize, roomSize);
+
+            } else {
+                String filePath = roomConfig;
+                // Parse json here
+            }
+        });
+
+        return room[0];
     }
 
     public void startSimulation() {
