@@ -54,10 +54,17 @@ public class AddObstacleButton extends Button {
                         room.addObstacle(obstacle);
                         // Add the shape of the obstacle to the pane
                         roomPane.getChildren().add(obstacle.getShape());
+
+                        // Add event handler for the obstacle's shape
+                        obstacle.getShape().setOnMouseClicked(event -> {
+                            room.getObstacles().remove(obstacle);
+                            roomPane.getChildren().remove(obstacle.getShape());
+                        });
                     }
                 }
             }
         });
     }
 }
+
 
