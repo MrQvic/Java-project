@@ -21,7 +21,7 @@ public class AddRobotButton extends Button {
                 // Create a dialog for user input
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Add Robot");
-                dialog.setHeaderText("Enter the robot's position (x,y):");
+                dialog.setHeaderText("Enter the robot's position x,y:");
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(position -> {
                     String[] coordinates = position.split(",");

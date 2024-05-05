@@ -21,7 +21,7 @@ public class AddObstacleButton extends Button {
                 // Create a series of dialog boxes for user input
                 TextInputDialog positionDialog = new TextInputDialog();
                 positionDialog.setTitle("Add Obstacle");
-                positionDialog.setHeaderText("Enter the obstacle's position (x,y):");
+                positionDialog.setHeaderText("Enter the obstacle's position x,y:");
 
                 TextInputDialog typeDialog = new TextInputDialog("rectangle");
                 typeDialog.setTitle("Add Obstacle");
