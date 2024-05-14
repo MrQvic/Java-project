@@ -30,15 +30,15 @@ Ensure that you have Maven installed and correctly setup on your system.
 3. Run the following command to compile the project:
 
 
-    mvn clean compile
+        mvn clean compile
 
 ### Generating javadocs
 
-    mvn javadoc:javadoc
+        mvn javadoc:javadoc
 
 ### Running the Application
 After successfully compiling the project, you can run the application using the following command:
 
-    mvn javafx:run
+        mvn javafx:run
 
 This will start the simulation GUI, where you can interact with the robots and the environment.
