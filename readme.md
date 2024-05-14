@@ -6,6 +6,9 @@ It features autonomous and remotely controlled robots that navigate around stati
 The initial placement of obstacles and robots can be set interactively in the GUI, saved to a file and loaded from a file.
 They can be removed by clicking on them with mouse.
 
+![obrazek](https://github.com/MrQvic/Java-project/assets/101328994/6282573d-cddf-436f-872d-0c1f1573d68a)
+
+
 ### Team Members
 - Adam Mrkva    - xmrkva04
 - Daniel Jacobs - xjacob00
