@@ -30,7 +30,7 @@ Ensure that you have Maven installed and correctly setup on your system.
 3. Run the following command to compile the project:
 
 
-    mvn clean compile
+       mvn clean compile
 
 ### Generating javadocs
 
