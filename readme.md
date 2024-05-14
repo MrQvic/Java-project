@@ -29,7 +29,8 @@ Ensure that you have Maven installed and correctly setup on your system.
 2. Navigate to the root directory of the project where the `pom.xml` file is located.
 3. Run the following command to compile the project:
 
-    `mvn clean compile`
+
+    mvn clean compile
 
 ### Generating javadocs
 
