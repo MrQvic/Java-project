@@ -1,4 +1,4 @@
-# Simple 2D Robot Simulator Project (IJA 2023/24)
+# Simple 2D Robot Simulator Project
 
 ## Project Overview
 This project is a simple 2D simulation of robots in a bounded rectangular environment with obstacles.
